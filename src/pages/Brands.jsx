@@ -1,24 +1,68 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+
+// BrandCard Component to handle local image loading and fallback
+function BrandCard({ brand, selectedBrand, onSelect }) {
+  const [imgError, setImgError] = useState(false);
+
+  // Reset image error state when brand changes (useful if data updates)
+  useEffect(() => {
+    setImgError(false);
+  }, [brand]);
+
+  return (
+    <motion.div 
+      whileHover={{ scale: 1.05, borderColor: 'var(--accent-color)' }}
+      whileTap={{ scale: 0.95 }}
+      onClick={() => onSelect(brand)}
+      className={`brand-card glass-card ${selectedBrand?.name === brand.name ? 'featured' : ''}`}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '140px'
+      }}
+    >
+      {!imgError ? (
+        <>
+          <div className="brand-card-logo">
+            <img 
+              src={brand.logo} 
+              alt={`${brand.name} Logo`} 
+              className="brand-logo-img" 
+              onError={() => setImgError(true)}
+            />
+          </div>
+          <div className="brand-card-name">{brand.name}</div>
+        </>
+      ) : (
+        <div className="brand-card-name">{brand.name}</div>
+      )}
+    </motion.div>
+  );
+}
 
 export default function Brands({ onNavigate }) {
   const brandsData = [
-    { id: '1', name: 'Toyota', logo: 'T', tagline: 'Reliable Engineering & Longevity', models: ['Fortuner', 'Innova Crysta', 'Camry', 'Glanza', 'Urban Cruiser Taisor'], cost: '₹2,199 - ₹7,699', recom: ['Engine tuning at 10,000km', 'Standard/Premium Package for long durability', 'Synthetic oil replacements'] },
-    { id: '2', name: 'Honda', logo: 'H', tagline: 'VTEC Precision & Refinement', models: ['City', 'Civic', 'Amaze', 'Elevate', 'WR-V'], cost: '₹2,199 - ₹7,699', recom: ['AC performance diagnostic testing', 'Brakes checking every 6 months', 'Standard Service package'] },
-    { id: '3', name: 'Hyundai', logo: 'Hy', tagline: 'Modern Technology & Styling', models: ['Creta', 'i20 Elite', 'Verna', 'Tucson', 'Venue'], cost: '₹2,199 - ₹7,699', recom: ['Steering calibration diagnostic scan', 'Periodic servicing at 5,000km', 'Full diagnostic check'] },
-    { id: '4', name: 'Maruti Suzuki', logo: 'MS', tagline: 'Maximum Efficiency & Service Network', models: ['Swift', 'Baleno', 'Brezza', 'Ertiga', 'Grand Vitara'], cost: '₹1,999 - ₹6,999', recom: ['Basic Package tuning schedules', 'Filter replacements every 6 months', 'Suspension inspection'] },
-    { id: '5', name: 'Tata Motors', logo: 'Ta', tagline: 'Strong Built & Security First', models: ['Nexon', 'Harrier', 'Safari', 'Altroz', 'Punch'], cost: '₹2,199 - ₹7,699', recom: ['Standard Package checkups', 'Wheel alignment inspection', 'Engine diagnostic safety check'] },
-    { id: '6', name: 'Mahindra', logo: 'M', tagline: 'Authentic SUVs & Durable Performance', models: ['Thar', 'XUV700', 'Scorpio-N', 'Bolero', 'XUV300'], cost: '₹2,199 - ₹7,699', recom: ['Tire rotation and brake inspections', 'Underbody washing & details coating', 'Standard service tuning'] },
-    { id: '7', name: 'Kia', logo: 'K', tagline: 'Futuristic Cabins & Driving Thrills', models: ['Seltos', 'Sonet', 'Carens', 'Carnival', 'EV6'], cost: '₹2,199 - ₹7,699', recom: ['Electrical OBD scanning checks', 'AC clean & sterilization', 'Periodic oil check'] },
-    { id: '8', name: 'BMW', logo: 'B', tagline: 'Sheer Driving Pleasure', models: ['3 Series', '5 Series', 'X5 SUV', 'i7 Electric', 'Z4 Roadster'], cost: '₹2,999 - ₹10,499', recom: ['OBD diagnostic scanner check', 'Premium Package every 10,000km', 'Synthetic filter & oil exchange'] },
-    { id: '9', name: 'Mercedes-Benz', logo: 'MB', tagline: 'The Best or Nothing', models: ['C-Class', 'E-Class Sedan', 'GLC Luxury SUV', 'S-Class flagship', 'AMG-GLE'], cost: '₹2,999 - ₹10,499', recom: ['Engine calibration scan checks', 'Premium Package diagnostic checking', 'Breakpad alignment inspections'] },
-    { id: '10', name: 'Audi', logo: 'A', tagline: 'Vorsprung durch Technik', models: ['A4', 'A6 Executive', 'Q5 Premium', 'Q7 Family', 'e-tron EV'], cost: '₹2,999 - ₹10,499', recom: ['Complete electronics system diagnostic', 'Premium service checkup schedule', 'Dynamic wheel balance checks'] }
+    { id: '1', name: 'Toyota', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Toyota_logo.svg/120px-Toyota_logo.svg.png', tagline: 'Reliable Engineering & Longevity', models: ['Fortuner', 'Innova Crysta', 'Camry', 'Glanza', 'Urban Cruiser Taisor'], cost: '₹2,199 - ₹7,699', recom: ['Engine tuning at 10,000km', 'Standard/Premium Package for long durability', 'Synthetic oil replacements'] },
+    { id: '2', name: 'Honda', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Honda_Logo.svg/120px-Honda_Logo.svg.png', tagline: 'VTEC Precision & Refinement', models: ['City', 'Civic', 'Amaze', 'Elevate', 'WR-V'], cost: '₹2,199 - ₹7,699', recom: ['AC performance diagnostic testing', 'Brakes checking every 6 months', 'Standard Service package'] },
+    { id: '3', name: 'Hyundai', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Hyundai_Motor_Company_logo.svg/120px-Hyundai_Motor_Company_logo.svg.png', tagline: 'Modern Technology & Styling', models: ['Creta', 'i20 Elite', 'Verna', 'Tucson', 'Venue'], cost: '₹2,199 - ₹7,699', recom: ['Steering calibration diagnostic scan', 'Periodic servicing at 5,000km', 'Full diagnostic check'] },
+    { id: '4', name: 'Maruti Suzuki', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Suzuki_logo_2.svg/120px-Suzuki_logo_2.svg.png', tagline: 'Maximum Efficiency & Service Network', models: ['Swift', 'Baleno', 'Brezza', 'Ertiga', 'Grand Vitara'], cost: '₹1,999 - ₹6,999', recom: ['Basic Package tuning schedules', 'Filter replacements every 6 months', 'Suspension inspection'] },
+    { id: '5', name: 'Tata Motors', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Tata_logo.svg/120px-Tata_logo.svg.png', tagline: 'Strong Built & Security First', models: ['Nexon', 'Harrier', 'Safari', 'Altroz', 'Punch'], cost: '₹2,199 - ₹7,699', recom: ['Standard Package checkups', 'Wheel alignment inspection', 'Engine diagnostic safety check'] },
+    { id: '6', name: 'Mahindra', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Mahindra_Rise_Logo_2021.svg/120px-Mahindra_Rise_Logo_2021.svg.png', tagline: 'Authentic SUVs & Durable Performance', models: ['Thar', 'XUV700', 'Scorpio-N', 'Bolero', 'XUV300'], cost: '₹2,199 - ₹7,699', recom: ['Tire rotation and brake inspections', 'Underbody washing & details coating', 'Standard service tuning'] },
+    { id: '7', name: 'Kia', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Kia_logo_%282021%29.svg/120px-Kia_logo_%282021%29.svg.png', tagline: 'Futuristic Cabins & Driving Thrills', models: ['Seltos', 'Sonet', 'Carens', 'Carnival', 'EV6'], cost: '₹2,199 - ₹7,699', recom: ['Electrical OBD scanning checks', 'AC clean & sterilization', 'Periodic oil check'] },
+    { id: '8', name: 'BMW', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/120px-BMW.svg.png', tagline: 'Sheer Driving Pleasure', models: ['3 Series', '5 Series', 'X5 SUV', 'i7 Electric', 'Z4 Roadster'], cost: '₹2,999 - ₹10,499', recom: ['OBD diagnostic scanner check', 'Premium Package every 10,000km', 'Synthetic filter & oil exchange'] },
+    { id: '9', name: 'Mercedes-Benz', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Mercedes-Benz_logo_2011.svg/120px-Mercedes-Benz_logo_2011.svg.png', tagline: 'The Best or Nothing', models: ['C-Class', 'E-Class Sedan', 'GLC Luxury SUV', 'S-Class flagship', 'AMG-GLE'], cost: '₹2,999 - ₹10,499', recom: ['Engine calibration scan checks', 'Premium Package diagnostic checking', 'Breakpad alignment inspections'] },
+    { id: '10', name: 'Audi', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Audi-Logo_2016.svg/120px-Audi-Logo_2016.svg.png', tagline: 'Vorsprung durch Technik', models: ['A4', 'A6 Executive', 'Q5 Premium', 'Q7 Family', 'e-tron EV'], cost: '₹2,999 - ₹10,499', recom: ['Complete electronics system diagnostic', 'Premium service checkup schedule', 'Dynamic wheel balance checks'] }
   ];
 
   const [selectedBrand, setSelectedBrand] = useState(null);
+  const [detailImgError, setDetailImgError] = useState(false);
 
   const handleBrandSelect = (brand) => {
     setSelectedBrand(brand);
+    setDetailImgError(false);
   };
 
   return (
@@ -38,16 +82,12 @@ export default function Brands({ onNavigate }) {
         {/* Brand Grid */}
         <div className="brands-grid">
           {brandsData.map(b => (
-            <motion.div 
-              key={b.id}
-              whileHover={{ scale: 1.05, borderColor: 'var(--accent-color)' }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => handleBrandSelect(b)}
-              className={`brand-card glass-card ${selectedBrand?.name === b.name ? 'featured' : ''}`}
-            >
-              <div className="brand-card-logo">{b.logo}</div>
-              <div className="brand-card-name">{b.name}</div>
-            </motion.div>
+            <BrandCard 
+              key={b.id} 
+              brand={b} 
+              selectedBrand={selectedBrand} 
+              onSelect={handleBrandSelect} 
+            />
           ))}
         </div>
 
@@ -63,8 +103,17 @@ export default function Brands({ onNavigate }) {
               className="brand-details-pane glass-card"
               style={{ display: 'block', overflow: 'hidden' }}
             >
-              <div className="brand-details-header">
-                <div className="brand-card-logo" style={{ margin: 0 }}>{selectedBrand.logo}</div>
+              <div className="brand-details-header" style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '20px' }}>
+                {!detailImgError && (
+                  <div className="brand-card-logo" style={{ margin: 0 }}>
+                    <img 
+                      src={selectedBrand.logo} 
+                      alt={`${selectedBrand.name} Logo`} 
+                      className="brand-logo-img" 
+                      onError={() => setDetailImgError(true)}
+                    />
+                  </div>
+                )}
                 <div>
                   <h2 style={{ fontSize: '1.8rem', margin: 0 }}>{selectedBrand.name}</h2>
                   <p style={{ color: 'var(--text-muted)', margin: 0 }}>{selectedBrand.tagline}</p>

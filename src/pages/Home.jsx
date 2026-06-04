@@ -1,6 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const hotspots = [
+  {
+    top: '42%',
+    left: '52%',
+    icon: 'fa-snowflake',
+    title: 'HVAC & AC Service',
+    desc: 'Climate diagnosis: Refrigerant level 98% | Cabin filter status: Optimal | Output temp: 6°C'
+  },
+  {
+    top: '48%',
+    left: '68%',
+    icon: 'fa-microchip',
+    title: 'ECU Tuning & Diagnostics',
+    desc: 'Engine health: 99% | 0 errors detected | Transmission sync: Excellent | Fuel injection: Calibrated'
+  },
+  {
+    top: '64%',
+    left: '78%',
+    icon: 'fa-life-ring',
+    title: 'Brakes & Wheel Alignment',
+    desc: 'Brake pads wear: 12% | Fluid pressure: Normal | Alignment calibration: Balanced 0.05°'
+  },
+  {
+    top: '72%',
+    left: '58%',
+    icon: 'fa-spray-can',
+    title: 'Detailing & Paint Protection',
+    desc: 'Exterior protection: 9H Ceramic Coat applied | Hydrophobic rating: High | Gloss index: 98%'
+  },
+  {
+    top: '32%',
+    left: '75%',
+    icon: 'fa-tools',
+    title: 'Hydraulic Lift Systems',
+    desc: 'Under-chassis service: Lift active | Suspensions inspected | Bushings & linkages secure'
+  }
+];
+
 // Count-up helper component for premium stats count up
 function Counter({ target }) {
   const [count, setCount] = useState(0);
@@ -26,7 +64,7 @@ function Counter({ target }) {
   return <span>{count.toLocaleString()}+</span>;
 }
 
-export default function Home({ onNavigate, showToast }) {
+export default function Home({ onNavigate, showToast, theme = 'dark-theme' }) {
   // Brand Estimator State
   const [estimateBrand, setEstimateBrand] = useState('');
   const [estimateService, setEstimateService] = useState('');
@@ -141,7 +179,45 @@ export default function Home({ onNavigate, showToast }) {
       transition={{ duration: 0.4 }}
     >
       {/* Hero Section */}
-      <section className="hero-section">
+      <section className="hero-section" style={{ position: 'relative', overflow: 'hidden' }}>
+        {/* Interactive 4K Garage Diagnostic Hero Backdrop */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.2 }}
+          className="hero-car-bg-container"
+        >
+          <img 
+            src="/garage_hero.png" 
+            alt="Futuristic Car Service Bay" 
+            className="hero-image-bg"
+          />
+          <div className="hero-vignette" />
+          
+          {/* Dynamic Diagnostic Hotspots */}
+          <div className="hotspots-container" style={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0, zIndex: 2 }}>
+            {hotspots.map((spot, idx) => (
+              <div 
+                key={idx}
+                className="hero-hotspot"
+                style={{ top: spot.top, left: spot.left }}
+              >
+                <div className="hotspot-pointer">
+                  <i className={`fas ${spot.icon} hotspot-icon`}></i>
+                </div>
+                <div className="hotspot-tooltip">
+                  <div className="tooltip-title">
+                    <i className={`fas ${spot.icon}`}></i> {spot.title}
+                  </div>
+                  <div className="tooltip-desc">
+                    {spot.desc}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
         <div className="container hero-layout">
           <div className="hero-text">
             <motion.div 

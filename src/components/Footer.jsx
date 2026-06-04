@@ -45,6 +45,7 @@ export default function Footer({ setActivePage, showToast }) {
             <li><a href="#booking" onClick={(e) => { e.preventDefault(); setActivePage('booking'); }}>Book Appointment</a></li>
             <li><a href="#tracking" onClick={(e) => { e.preventDefault(); setActivePage('tracking'); }}>Track Status</a></li>
             <li><a href="#contact" onClick={(e) => { e.preventDefault(); setActivePage('contact'); }}>Emergency Support</a></li>
+            <li><a href="#admin" onClick={(e) => { e.preventDefault(); setActivePage('admin'); }}>Admin Login</a></li>
           </ul>
         </div>
 
@@ -68,6 +69,7 @@ export default function Footer({ setActivePage, showToast }) {
         <div style={{ display: 'flex', gap: '20px' }}>
           <a href="#">Privacy Policy</a>
           <a href="#">Terms of Use</a>
+          <a href="#admin" onClick={(e) => { e.preventDefault(); setActivePage('admin'); }} style={{ opacity: 0.12, cursor: 'default' }}>Admin</a>
         </div>
       </div>
     </footer>

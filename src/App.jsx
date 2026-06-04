@@ -18,6 +18,7 @@ import Tracking from './pages/Tracking';
 import Reviews from './pages/Reviews';
 import Blog from './pages/Blog';
 import Contact from './pages/Contact';
+import Admin from './pages/Admin';
 
 export default function App() {
   // Navigation & Routing State
@@ -192,6 +193,7 @@ export default function App() {
               key="home" 
               onNavigate={handleNavigate} 
               showToast={showToast} 
+              theme={theme}
             />
           )}
           {activePage === 'services' && (
@@ -246,6 +248,16 @@ export default function App() {
               key="contact" 
               onNavigate={handleNavigate} 
               showToast={showToast} 
+            />
+          )}
+          {activePage === 'admin' && (
+            <Admin 
+              key="admin" 
+              bookingHistory={bookingHistory}
+              updateBookingStatus={updateBookingStatus}
+              setBookingHistory={setBookingHistory}
+              showToast={showToast}
+              onNavigate={handleNavigate}
             />
           )}
         </AnimatePresence>
