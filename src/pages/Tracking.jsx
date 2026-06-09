@@ -127,9 +127,11 @@ export default function Tracking({ initialTrackId, bookingHistory, loyaltyPoints
               <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                 * Timeline automatically shifts when mechanic updates logs.
               </span>
-              <button className="btn btn-secondary" onClick={handleSimulateStatus}>
-                <i className="fas fa-play"></i> Simulate Next Step
-              </button>
+              {sessionStorage.getItem('autocare_admin_auth') === 'true' && (
+                <button className="btn btn-secondary" onClick={handleSimulateStatus}>
+                  <i className="fas fa-play"></i> Simulate Next Step
+                </button>
+              )}
             </div>
           </motion.div>
         )}
