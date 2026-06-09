@@ -64,7 +64,7 @@ function Counter({ target }) {
   return <span>{count.toLocaleString()}+</span>;
 }
 
-export default function Home({ onNavigate, showToast, theme = 'dark-theme' }) {
+export default function Home({ onNavigate, showToast, theme = 'dark-theme', websiteSettings }) {
   // Brand Estimator State
   const [estimateBrand, setEstimateBrand] = useState('');
   const [estimateService, setEstimateService] = useState('');
@@ -89,9 +89,9 @@ export default function Home({ onNavigate, showToast, theme = 'dark-theme' }) {
     if (!estimateBrand || !estimateService) return;
 
     let base = 1500;
-    if (estimateService === 'Basic Package') base = 1999;
-    else if (estimateService === 'Standard Package') base = 3999;
-    else if (estimateService === 'Premium Package') base = 6999;
+    if (estimateService === 'Basic Package') base = websiteSettings?.priceBasic || 1999;
+    else if (estimateService === 'Standard Package') base = websiteSettings?.priceStandard || 3999;
+    else if (estimateService === 'Premium Package') base = websiteSettings?.pricePremium || 6999;
     else if (estimateService === 'Car Wash') base = 599;
 
     const luxury = ['BMW', 'Mercedes-Benz', 'Audi'];
@@ -226,7 +226,7 @@ export default function Home({ onNavigate, showToast, theme = 'dark-theme' }) {
               transition={{ delay: 0.2 }}
               className="hero-tagline"
             >
-              Trusted Car Services for Every Brand
+              {websiteSettings?.heroTagline || "Trusted Car Services for Every Brand"}
             </motion.div>
             <motion.h1 
               initial={{ y: -20, opacity: 0 }}
@@ -234,7 +234,8 @@ export default function Home({ onNavigate, showToast, theme = 'dark-theme' }) {
               transition={{ delay: 0.3 }}
               className="hero-title"
             >
-              Keep Your Car Running at <span>Peak Performance</span>
+              {websiteSettings?.heroTitlePrefix || "Keep Your Car Running at "}
+              <span>{websiteSettings?.heroTitleHighlight || "Peak Performance"}</span>
             </motion.h1>
             <motion.p 
               initial={{ y: -20, opacity: 0 }}
@@ -242,7 +243,7 @@ export default function Home({ onNavigate, showToast, theme = 'dark-theme' }) {
               transition={{ delay: 0.4 }}
               className="hero-description"
             >
-              Experience premium automotive care with upfront transparent pricing, certified mechanics, and live step-by-step service tracking.
+              {websiteSettings?.heroDescription || "Experience premium automotive care with upfront transparent pricing, certified mechanics, and live step-by-step service tracking."}
             </motion.p>
             <motion.div 
               initial={{ y: 20, opacity: 0 }}
@@ -562,10 +563,10 @@ export default function Home({ onNavigate, showToast, theme = 'dark-theme' }) {
             {/* Basic */}
             <motion.div whileHover={{ y: -5 }} className="package-card glass-card">
               <div className="badge badge-primary">Basic Package</div>
-              <div className="package-price">₹1,999<span>/Service</span></div>
+              <div className="package-price">₹{(websiteSettings?.priceBasic || 1999).toLocaleString('en-IN')}<span>/Service</span></div>
               <ul className="package-features">
                 <li><i className="fas fa-check"></i> Engine Oil Check</li>
-                <li><i class="fas fa-check"></i> Battery Check</li>
+                <li><i className="fas fa-check"></i> Battery Check</li>
                 <li><i className="fas fa-check"></i> General Inspection</li>
                 <li style={{ color: 'var(--text-muted)', textDecoration: 'line-through' }}><i className="fas fa-times" style={{ color: 'var(--danger)' }}></i> Wheel Alignment</li>
                 <li style={{ color: 'var(--text-muted)', textDecoration: 'line-through' }}><i className="fas fa-times" style={{ color: 'var(--danger)' }}></i> AC Performance Check</li>
@@ -578,7 +579,7 @@ export default function Home({ onNavigate, showToast, theme = 'dark-theme' }) {
             {/* Standard */}
             <motion.div whileHover={{ y: -5 }} className="package-card glass-card featured">
               <div className="badge badge-success">Standard Package</div>
-              <div className="package-price">₹3,999<span>/Service</span></div>
+              <div className="package-price">₹{(websiteSettings?.priceStandard || 3999).toLocaleString('en-IN')}<span>/Service</span></div>
               <ul className="package-features">
                 <li><i className="fas fa-check"></i> Engine Oil Check & Top Up</li>
                 <li><i className="fas fa-check"></i> Battery Check & Diagnostics</li>
@@ -594,7 +595,7 @@ export default function Home({ onNavigate, showToast, theme = 'dark-theme' }) {
             {/* Premium */}
             <motion.div whileHover={{ y: -5 }} className="package-card glass-card">
               <div className="badge badge-primary">Premium Package</div>
-              <div className="package-price">₹6,999<span>/Service</span></div>
+              <div className="package-price">₹{(websiteSettings?.pricePremium || 6999).toLocaleString('en-IN')}<span>/Service</span></div>
               <ul className="package-features">
                 <li><i className="fas fa-check"></i> Complete Engine Oil & Filter Change</li>
                 <li><i className="fas fa-check"></i> Battery Check & Full Diagnosis</li>
@@ -624,9 +625,9 @@ export default function Home({ onNavigate, showToast, theme = 'dark-theme' }) {
               <tbody>
                 <tr>
                   <td>Starting Price</td>
-                  <td>₹1,999</td>
-                  <td>₹3,999</td>
-                  <td>₹6,999</td>
+                  <td>₹{(websiteSettings?.priceBasic || 1999).toLocaleString('en-IN')}</td>
+                  <td>₹{(websiteSettings?.priceStandard || 3999).toLocaleString('en-IN')}</td>
+                  <td>₹{(websiteSettings?.pricePremium || 6999).toLocaleString('en-IN')}</td>
                 </tr>
                 <tr>
                   <td>Engine Oil Top-Up</td>

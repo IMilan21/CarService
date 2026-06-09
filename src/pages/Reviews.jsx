@@ -1,29 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function Reviews({ showToast }) {
-  // Predefined reviews
-  const defaultReviews = [
-    { id: 1, name: 'Siddharth Sharma', stars: 5, comment: 'Exceptional service! The pickup was right on time and my car felt like brand new after the standard service package.', img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&h=150&q=80' },
-    { id: 2, name: 'Neha Goel', stars: 5, comment: 'Highly recommend the AI recommendation tool. It diagnosed my AC issue correctly and saved me from unnecessary garage repairs.', img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&h=150&q=80' },
-    { id: 3, name: 'Amit Verma', stars: 4, comment: 'The live tracking feature is super convenient. I was able to watch progress updates step-by-step from my desk.', img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&h=150&q=80' }
-  ];
-
-  const [reviews, setReviews] = useState(() => {
-    const saved = localStorage.getItem('autocare_reviews');
-    return saved ? JSON.parse(saved) : defaultReviews;
-  });
-
+export default function Reviews({ showToast, reviews, setReviews }) {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   // Form State
   const [name, setName] = useState('');
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState('');
-
-  useEffect(() => {
-    localStorage.setItem('autocare_reviews', JSON.stringify(reviews));
-  }, [reviews]);
 
   const handleNextSlide = () => {
     setCurrentSlide(prev => (prev === reviews.length - 1 ? 0 : prev + 1));

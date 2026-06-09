@@ -1,20 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function Services({ onNavigate, wishlist, toggleWishlist, recentlyViewed, addRecentlyViewed }) {
-  // Services Data
-  const servicesData = [
-    { id: '1', title: 'Periodic Service', category: 'Maintenance', price: 2499, img: 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80', desc: 'Complete 40-point maintenance inspect, engine oil top-up, spark plugs inspection and filter check.' },
-    { id: '2', title: 'Oil Change', category: 'Maintenance', price: 1499, img: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80', desc: 'Premium synthetic oil replace & lubricant check with standard oil filter replacements.' },
-    { id: '3', title: 'Brake Repair', category: 'Repairs', price: 1899, img: 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80', desc: 'Inspection of calipers, pads replacement, lines bleeding and diagnostic safety report.' },
-    { id: '4', title: 'Wheel Alignment', category: 'Repairs', price: 899, img: 'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=600&q=80', desc: 'Precise 3D wheel alignment, tracking adjustment and dynamic balancing for safety.' },
-    { id: '5', title: 'AC Service', category: 'Repairs', price: 1299, img: 'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=600&q=80', desc: 'Cabin filter cleaning, vent sterilization and AC refrigerant gas top-up.' },
-    { id: '6', title: 'Engine Repair', category: 'Repairs', price: 9999, img: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80', desc: 'Advanced engine overhaul, valve tuning, diagnostic error clearance and performance tuning.' },
-    { id: '7', title: 'Battery Replacement', category: 'Maintenance', price: 3499, img: 'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=600&q=80', desc: 'High capacity battery installation with 36 months warranty and old battery recycling.' },
-    { id: '8', title: 'Dent & Paint', category: 'Cleaning', price: 4999, img: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80', desc: 'Precision scratch extraction, paint match code painting and high-gloss polish overlay.' },
-    { id: '9', title: 'Car Wash', category: 'Cleaning', price: 599, img: 'https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=600&q=80', desc: 'High pressure shampoo wash, underbody clean, dashboard cleaning and vacuum service.' },
-    { id: '10', title: 'Insurance Claim Assistance', category: 'Utility', price: 0, img: 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80', desc: 'End-to-end documentation preparation, garage inspector coordinates and quick claim processing.' }
-  ];
+export default function Services({ onNavigate, wishlist, toggleWishlist, recentlyViewed, addRecentlyViewed, servicesData }) {
 
   // Filters State
   const [categories, setCategories] = useState({

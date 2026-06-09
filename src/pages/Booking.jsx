@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function Booking({ initialParams, onNavigate, showToast, addBookingHistory, addLoyaltyPoints }) {
+export default function Booking({ initialParams, onNavigate, showToast, addBookingHistory, addLoyaltyPoints, servicesData, websiteSettings }) {
   // Wizard steps: 1: Customer, 2: Vehicle, 3: Date & Time, 4: Confirm
   const [step, setStep] = useState(1);
 
@@ -71,18 +71,15 @@ export default function Booking({ initialParams, onNavigate, showToast, addBooki
   // Calculate pricing values
   const getPricingCalculations = () => {
     let base = 0;
-    if (service === 'Basic Package') base = 1999;
-    else if (service === 'Standard Package') base = 3999;
-    else if (service === 'Premium Package') base = 6999;
-    else if (service === 'Periodic Service') base = 2499;
-    else if (service === 'Oil Change') base = 1499;
-    else if (service === 'Brake Repair') base = 1899;
-    else if (service === 'Wheel Alignment') base = 899;
-    else if (service === 'AC Service') base = 1299;
-    else if (service === 'Engine Repair') base = 9999;
-    else if (service === 'Battery Replacement') base = 3499;
-    else if (service === 'Dent & Paint') base = 4999;
-    else if (service === 'Car Wash') base = 599;
+    if (service === 'Basic Package') base = websiteSettings?.priceBasic || 1999;
+    else if (service === 'Standard Package') base = websiteSettings?.priceStandard || 3999;
+    else if (service === 'Premium Package') base = websiteSettings?.pricePremium || 6999;
+    else {
+      const match = servicesData.find(s => s.title === service);
+      if (match) {
+        base = match.price;
+      }
+    }
 
     // Multiplier indices
     const luxury = ['BMW', 'Mercedes-Benz', 'Audi'];
@@ -351,21 +348,16 @@ export default function Booking({ initialParams, onNavigate, showToast, addBooki
                     <select value={service} onChange={(e) => setService(e.target.value)} required>
                       <option value="">Choose Service / Package</option>
                       <optgroup label="Service Packages">
-                        <option value="Basic Package">Basic Package (₹1,999)</option>
-                        <option value="Standard Package">Standard Package (₹3,999)</option>
-                        <option value="Premium Package">Premium Package (₹6,999)</option>
+                        <option value="Basic Package">Basic Package (₹{(websiteSettings?.priceBasic || 1999).toLocaleString('en-IN')})</option>
+                        <option value="Standard Package">Standard Package (₹{(websiteSettings?.priceStandard || 3999).toLocaleString('en-IN')})</option>
+                        <option value="Premium Package">Premium Package (₹{(websiteSettings?.pricePremium || 6999).toLocaleString('en-IN')})</option>
                       </optgroup>
                       <optgroup label="Individual Services">
-                        <option value="Periodic Service">Periodic Service (₹2,499)</option>
-                        <option value="Oil Change">Oil Change (₹1,499)</option>
-                        <option value="Brake Repair">Brake Repair (₹1,899)</option>
-                        <option value="Wheel Alignment">Wheel Alignment (₹899)</option>
-                        <option value="AC Service">AC Service (₹1,299)</option>
-                        <option value="Engine Repair">Engine Repair (₹9,999)</option>
-                        <option value="Battery Replacement">Battery Replacement (₹3,499)</option>
-                        <option value="Dent & Paint">Dent & Paint (₹4,999)</option>
-                        <option value="Car Wash">Car Wash (₹599)</option>
-                        <option value="Insurance Claim Assistance">Insurance Assist (Free)</option>
+                        {servicesData.map(s => (
+                          <option key={s.id} value={s.title}>
+                            {s.title} ({s.price > 0 ? `₹${s.price.toLocaleString('en-IN')}` : 'Free Assist'})
+                          </option>
+                        ))}
                       </optgroup>
                     </select>
                   </div>
