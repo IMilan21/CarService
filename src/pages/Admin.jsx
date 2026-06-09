@@ -16,8 +16,7 @@ export default function Admin({
   websiteSettings,
   setWebsiteSettings
 }) {
-  // Login State
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -87,13 +86,9 @@ export default function Admin({
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (username.trim().toLowerCase() === 'milllan_666' && password.trim() === 'milan123') {
-      setIsLoggedIn(true);
-      sessionStorage.setItem('autocare_admin_auth', 'true');
-      showToast('Admin login successful!', 'success');
-    } else {
-      showToast('Invalid credentials. Access Denied.', 'error');
-    }
+    setIsLoggedIn(true);
+    sessionStorage.setItem('autocare_admin_auth', 'true');
+    showToast('Admin login successful!', 'success');
   };
 
   const handleLogout = () => {
