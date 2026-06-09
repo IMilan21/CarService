@@ -9,10 +9,10 @@ export default function Contact({ onNavigate, showToast }) {
 
   // Near Garages List
   const allGarages = [
-    { id: 1, name: 'AutoCare West Main Garage', distance: '1.8 km', rating: '4.9', zip: '110001', address: 'Plot 4, Karol Bagh Metro Sector, New Delhi' },
-    { id: 2, name: 'AutoCare East Wing Workshop', distance: '3.4 km', rating: '4.8', zip: '110092', address: 'Block D, Preet Vihar Industrial Hub, New Delhi' },
-    { id: 3, name: 'AutoCare South Express Hub', distance: '4.2 km', rating: '4.7', zip: '110016', address: 'Plot 12, Hauz Khas Ring Road, New Delhi' },
-    { id: 4, name: 'AutoCare North Point Center', distance: '6.1 km', rating: '4.8', zip: '110009', address: 'G.T. Karnal Road, Near Model Town, New Delhi' }
+    { id: 1, name: 'GS West Main Garage', distance: '1.8 km', rating: '4.9', zip: '110001', address: 'Plot 4, Karol Bagh Metro Sector, New Delhi' },
+    { id: 2, name: 'GS East Wing Workshop', distance: '3.4 km', rating: '4.8', zip: '110092', address: 'Block D, Preet Vihar Industrial Hub, New Delhi' },
+    { id: 3, name: 'GS South Express Hub', distance: '4.2 km', rating: '4.7', zip: '110016', address: 'Plot 12, Hauz Khas Ring Road, New Delhi' },
+    { id: 4, name: 'GS North Point Center', distance: '6.1 km', rating: '4.8', zip: '110009', address: 'G.T. Karnal Road, Near Model Town, New Delhi' }
   ];
 
   const [zipCode, setZipCode] = useState('');

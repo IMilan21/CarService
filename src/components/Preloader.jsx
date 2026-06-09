@@ -22,7 +22,7 @@ export default function Preloader() {
           <div className="loader">
             <div className="loader-car"><i className="fas fa-car-side"></i></div>
             <div className="loader-bar"></div>
-            <p style={{ color: 'white', marginTop: '15px', fontWeight: 500, letterSpacing: '1px' }}>AUTOCARE HUB</p>
+            <p style={{ color: 'white', marginTop: '15px', fontWeight: 500, letterSpacing: '1px' }}>GS AUTOMOBILES</p>
           </div>
         </motion.div>
       )}

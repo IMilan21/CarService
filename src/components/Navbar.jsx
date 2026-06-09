@@ -25,7 +25,7 @@ export default function Navbar({ activePage, setActivePage, theme, toggleTheme, 
       <div className="container nav-container">
         <a href="#" className="logo" onClick={(e) => { e.preventDefault(); handleNavClick('home'); }}>
           <i className="fas fa-tools logo-icon"></i>
-          AutoCare <span>Hub</span>
+          GS <span>Automobiles</span>
         </a>
 
         {/* Desktop nav links */}

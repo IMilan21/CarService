@@ -109,9 +109,9 @@ export default function Booking({ initialParams, onNavigate, showToast, addBooki
   // Coupon Verification logic
   const handleApplyCoupon = () => {
     const code = coupon.toUpperCase().trim();
-    if (code === 'AUTOCARE10') {
+    if (code === 'GSAUTO10' || code === 'AUTOCARE10') {
       setAppliedCoupon({ code, type: 'percent', value: 10 });
-      setCouponMsg('Coupon code AUTOCARE10 applied! 10% off.');
+      setCouponMsg('Coupon code GSAUTO10 applied! 10% off.');
       setCouponSuccess(true);
       showToast('Coupon applied successfully!', 'success');
     } else if (code === 'WELCOME500') {
@@ -121,7 +121,7 @@ export default function Booking({ initialParams, onNavigate, showToast, addBooki
       showToast('Coupon applied successfully!', 'success');
     } else {
       setAppliedCoupon(null);
-      setCouponMsg('Invalid coupon code. Try AUTOCARE10 or WELCOME500.');
+      setCouponMsg('Invalid coupon code. Try GSAUTO10 or WELCOME500.');
       setCouponSuccess(false);
       showToast('Invalid coupon code', 'error');
     }
@@ -440,7 +440,7 @@ export default function Booking({ initialParams, onNavigate, showToast, addBooki
                 <div className="coupon-group">
                   <input 
                     type="text" 
-                    placeholder="Enter Coupon Code (e.g. AUTOCARE10)" 
+                    placeholder="Enter Coupon Code (e.g. GSAUTO10)" 
                     value={coupon}
                     onChange={(e) => setCoupon(e.target.value)}
                   />
@@ -529,7 +529,7 @@ export default function Booking({ initialParams, onNavigate, showToast, addBooki
                 <div className="invoice-container">
                   <div className="invoice-header">
                     <div>
-                      <div className="invoice-header-title">AutoCare Hub</div>
+                      <div className="invoice-header-title">GS Automobiles</div>
                       <div style={{ fontSize: '0.8rem', color: '#666' }}>24/7 Premium Car Servicing</div>
                     </div>
                     <div style={{ textAlign: 'right' }}>

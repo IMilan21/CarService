@@ -431,7 +431,7 @@ export default function Admin({
         <div className="admin-sidebar-brand">
           <i className="fas fa-tools text-accent"></i>
           <div>
-            <h3>AutoCare Admin</h3>
+            <h3>GS Automobiles Admin</h3>
             <span>Control Panel</span>
           </div>
         </div>

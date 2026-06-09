@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 export default function LiveChat({ setActivePage }) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { id: 1, text: "Hi! I am the AutoCare assistant. How can I help you today?", sender: 'bot' }
+    { id: 1, text: "Hi! I am the GS Automobiles assistant. How can I help you today?", sender: 'bot' }
   ]);
   const [inputVal, setInputVal] = useState('');
   const msgEndRef = useRef(null);
@@ -76,7 +76,7 @@ export default function LiveChat({ setActivePage }) {
             <div className="chat-header">
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <i className="fas fa-robot"></i>
-                <span>AutoCare Chat Bot</span>
+                <span>GS Automobiles Chat Bot</span>
               </div>
               <button 
                 onClick={() => setIsOpen(false)}

@@ -99,7 +99,7 @@ export default function App() {
       heroTitleHighlight: 'Peak Performance',
       heroDescription: 'Experience premium automotive care with upfront transparent pricing, certified mechanics, and live step-by-step service tracking.',
       contactPhone: '+91 98765 43210',
-      contactEmail: 'support@autocare.com',
+      contactEmail: 'support@gsautomobiles.com',
       contactAddress: '123 Auto Plaza, Sector 62, Noida, UP - 201301',
       workingHours: 'Mon - Sat: 9:00 AM - 7:00 PM',
       priceBasic: 1999,

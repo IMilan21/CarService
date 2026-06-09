@@ -17,7 +17,7 @@ export default function Footer({ setActivePage, showToast }) {
         <div className="footer-brand">
           <a href="#" className="logo" onClick={(e) => { e.preventDefault(); setActivePage('home'); }} style={{ color: 'white' }}>
             <i class="fas fa-tools logo-icon"></i>
-            AutoCare <span style={{ color: 'var(--accent-color)' }}>Hub</span>
+            GS <span style={{ color: 'var(--accent-color)' }}>Automobiles</span>
           </a>
           <p>Your one-stop destination for premium car repair and maintenance services. Trusted by 10,000+ car owners across multiple brands.</p>
           <div className="social-links">
@@ -65,7 +65,7 @@ export default function Footer({ setActivePage, showToast }) {
         </div>
       </div>
       <div className="container footer-bottom">
-        <p>&copy; 2026 AutoCare Hub. All Rights Reserved.</p>
+        <p>&copy; 2026 GS Automobiles. All Rights Reserved.</p>
         <div style={{ display: 'flex', gap: '20px' }}>
           <a href="#">Privacy Policy</a>
           <a href="#">Terms of Use</a>
