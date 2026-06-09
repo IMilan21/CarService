@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function Booking({ initialParams, onNavigate, showToast, addBookingHistory, addLoyaltyPoints, servicesData, websiteSettings }) {
+export default function Booking({ initialParams, onNavigate, showToast, addBookingHistory, addLoyaltyPoints, servicesData, websiteSettings, currentUser }) {
   // Wizard steps: 1: Customer, 2: Vehicle, 3: Date & Time, 4: Confirm
   const [step, setStep] = useState(1);
 
   // Form Inputs
-  const [fullname, setFullname] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
+  const [fullname, setFullname] = useState(currentUser?.fullname || '');
+  const [email, setEmail] = useState(currentUser?.email || '');
+  const [phone, setPhone] = useState(currentUser?.phone || '');
   const [city, setCity] = useState('');
 
   const [brand, setBrand] = useState('');

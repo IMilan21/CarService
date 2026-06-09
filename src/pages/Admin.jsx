@@ -622,6 +622,23 @@ export default function Admin({
                           </td>
                           <td>
                             <button 
+                              className="admin-simulate-btn"
+                              onClick={() => {
+                                const currentIndex = statusOptions.indexOf(b.status);
+                                if (currentIndex < statusOptions.length - 1) {
+                                  const nextStatus = statusOptions[currentIndex + 1];
+                                  updateBookingStatus(b.id, nextStatus);
+                                  showToast(`Status advanced to: ${nextStatus}`, 'success');
+                                } else {
+                                  showToast('Booking is already ready for delivery!', 'info');
+                                }
+                              }}
+                              style={{ background: 'none', border: 'none', color: 'var(--accent-color)', cursor: 'pointer', padding: '8px', marginRight: '10px' }}
+                              title="Simulate Next Step"
+                            >
+                              <i className="fas fa-play"></i>
+                            </button>
+                            <button 
                               className="admin-delete-btn"
                               onClick={() => handleDeleteBooking(b.id)}
                               title="Cancel / Delete Record"

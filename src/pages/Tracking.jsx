@@ -43,17 +43,7 @@ export default function Tracking({ initialTrackId, bookingHistory, loyaltyPoints
     return statusSteps.findIndex(s => s.label === status);
   };
 
-  const handleSimulateStatus = () => {
-    if (!activeBooking) return;
-    const currentIndex = getStatusIndex(activeBooking.status);
-    if (currentIndex < statusSteps.length - 1) {
-      const nextStatus = statusSteps[currentIndex + 1].label;
-      updateBookingStatus(activeBooking.id, nextStatus);
-      showToast(`Status updated: ${nextStatus}`, 'info');
-    } else {
-      showToast('Service is already ready for delivery!', 'success');
-    }
-  };
+
 
   const statusIdx = activeBooking ? getStatusIndex(activeBooking.status) : 0;
   const progressPercent = activeBooking ? (statusIdx / (statusSteps.length - 1)) * 100 : 0;
@@ -127,11 +117,7 @@ export default function Tracking({ initialTrackId, bookingHistory, loyaltyPoints
               <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                 * Timeline automatically shifts when mechanic updates logs.
               </span>
-              {sessionStorage.getItem('autocare_admin_auth') === 'true' && (
-                <button className="btn btn-secondary" onClick={handleSimulateStatus}>
-                  <i className="fas fa-play"></i> Simulate Next Step
-                </button>
-              )}
+
             </div>
           </motion.div>
         )}

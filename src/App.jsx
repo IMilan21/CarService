@@ -17,8 +17,9 @@ import Booking from './pages/Booking';
 import Tracking from './pages/Tracking';
 import Reviews from './pages/Reviews';
 import Blog from './pages/Blog';
-import Contact from './pages/Contact';
 import Admin from './pages/Admin';
+import Auth from './pages/Auth';
+import Contact from './pages/Contact';
 
 export default function App() {
   // Navigation & Routing State
@@ -110,6 +111,31 @@ export default function App() {
   const [wishlistOpen, setWishlistOpen] = useState(false);
   const [toasts, setToasts] = useState([]);
   const [showScrollTop, setShowScrollTop] = useState(false);
+
+  // User Authentication States
+  const [currentUser, setCurrentUser] = useState(() => {
+    const saved = localStorage.getItem('autocare_current_user');
+    return saved ? JSON.parse(saved) : null;
+  });
+
+  const [users, setUsers] = useState(() => {
+    const saved = localStorage.getItem('autocare_users');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [authRedirectParams, setAuthRedirectParams] = useState(null);
+
+  useEffect(() => {
+    if (currentUser) {
+      localStorage.setItem('autocare_current_user', JSON.stringify(currentUser));
+    } else {
+      localStorage.removeItem('autocare_current_user');
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
+    localStorage.setItem('autocare_users', JSON.stringify(users));
+  }, [users]);
 
   // Sync state changes to localStorage
   useEffect(() => {
@@ -219,9 +245,28 @@ export default function App() {
 
   // Navigations
   const handleNavigate = (page, params = null) => {
+    if (page === 'booking' && !currentUser) {
+      setAuthRedirectParams(params);
+      setActivePage('auth');
+      showToast('Please Login or Signup to book services.', 'info');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
     setActivePage(page);
     setPageParams(params);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleAuthSuccess = (user) => {
+    setCurrentUser(user);
+    showToast(`Welcome back, ${user.fullname}!`, 'success');
+    if (authRedirectParams) {
+      setActivePage('booking');
+      setPageParams(authRedirectParams);
+      setAuthRedirectParams(null);
+    } else {
+      setActivePage('home');
+    }
   };
 
   // Quick book now from wishlist side-panel
@@ -249,6 +294,9 @@ export default function App() {
           toggleTheme={toggleTheme}
           wishlistCount={wishlist.length}
           toggleWishlistSidebar={() => setWishlistOpen(!wishlistOpen)}
+          currentUser={currentUser}
+          setCurrentUser={setCurrentUser}
+          showToast={showToast}
         />
       )}
 
@@ -302,6 +350,7 @@ export default function App() {
               addLoyaltyPoints={addLoyaltyPoints}
               servicesData={servicesData}
               websiteSettings={websiteSettings}
+              currentUser={currentUser}
             />
           )}
           {activePage === 'tracking' && (
@@ -326,6 +375,15 @@ export default function App() {
             <Blog 
               key="blog" 
               blogArticles={blogArticles}
+            />
+          )}
+          {activePage === 'auth' && (
+            <Auth 
+              key="auth" 
+              users={users}
+              setUsers={setUsers}
+              onAuthSuccess={handleAuthSuccess}
+              onNavigate={handleNavigate}
             />
           )}
           {activePage === 'contact' && (
