@@ -179,21 +179,6 @@ export default function Services({ onNavigate, wishlist, toggleWishlist, recentl
                       onClick={() => handleServiceCardClick(item)}
                     >
                       <img src={item.img} alt={item.title} />
-                      <button 
-                        className={`wishlist-btn ${isWishlisted ? 'active' : ''}`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleWishlist({
-                            id: item.id,
-                            title: item.title,
-                            price: pText,
-                            img: item.img
-                          });
-                        }}
-                        aria-label="Wishlist Service"
-                      >
-                        <i className="fas fa-heart"></i>
-                      </button>
                       <div className="service-card-body">
                         <div className="badge badge-primary" style={{ alignSelf: 'flex-start', marginBottom: '10px' }}>
                           {item.category}

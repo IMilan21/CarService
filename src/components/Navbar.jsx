@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function Navbar({ activePage, setActivePage, theme, toggleTheme, wishlistCount, toggleWishlistSidebar, currentUser, setCurrentUser, showToast }) {
+export default function Navbar({ activePage, setActivePage, theme, toggleTheme, currentUser, setCurrentUser, showToast }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
@@ -63,7 +63,7 @@ export default function Navbar({ activePage, setActivePage, theme, toggleTheme, 
             </div>
           ) : (
             <button 
-              className="btn btn-primary" 
+              className="btn btn-primary navbar-signin-btn" 
               onClick={() => setActivePage('auth')}
               style={{ padding: '6px 14px', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '5px', marginRight: '5px', whiteSpace: 'nowrap' }}
             >
@@ -79,25 +79,6 @@ export default function Navbar({ activePage, setActivePage, theme, toggleTheme, 
             aria-label="Toggle Theme"
           >
             <i className={`fas ${theme === 'dark-theme' ? 'fa-sun' : 'fa-moon'}`}></i>
-          </motion.button>
-
-          <motion.button 
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="wishlist-toggle-btn" 
-            onClick={toggleWishlistSidebar}
-            aria-label="Toggle Wishlist"
-          >
-            <i className="fas fa-heart"></i>
-            {wishlistCount > 0 && (
-              <motion.span 
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                className="wishlist-count"
-              >
-                {wishlistCount}
-              </motion.span>
-            )}
           </motion.button>
 
           <button 

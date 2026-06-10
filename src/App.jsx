@@ -6,7 +6,6 @@ import Preloader from './components/Preloader';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import LiveChat from './components/LiveChat';
-import WishlistSidebar from './components/WishlistSidebar';
 import Toast from './components/Toast';
 
 // Pages
@@ -292,22 +291,9 @@ export default function App() {
           setActivePage={(page) => handleNavigate(page)} 
           theme={theme}
           toggleTheme={toggleTheme}
-          wishlistCount={wishlist.length}
-          toggleWishlistSidebar={() => setWishlistOpen(!wishlistOpen)}
           currentUser={currentUser}
           setCurrentUser={setCurrentUser}
           showToast={showToast}
-        />
-      )}
-
-      {/* 4. Wishlist Drawer Sidebar Panel */}
-      {!isAdminPage && (
-        <WishlistSidebar 
-          isOpen={wishlistOpen}
-          onClose={() => setWishlistOpen(false)}
-          wishlist={wishlist}
-          removeFromWishlist={removeFromWishlist}
-          onBookNow={handleBookFromWishlist}
         />
       )}
 
