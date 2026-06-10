@@ -556,7 +556,7 @@ export default function Home({ onNavigate, showToast, theme = 'dark-theme', webs
         <div className="container">
           <div className="section-header">
             <h2 className="section-title">Affordable <span>Service Packages</span></h2>
-            <p class="section-subtitle">Upfront transparent pricing with premium inclusions. Choose the package that suits your vehicle.</p>
+            <p className="section-subtitle">Upfront transparent pricing with premium inclusions. Choose the package that suits your vehicle.</p>
           </div>
 
           <div className="packages-grid">
@@ -638,7 +638,7 @@ export default function Home({ onNavigate, showToast, theme = 'dark-theme', webs
                 <tr>
                   <td>Wheel Alignment</td>
                   <td><i className="fas fa-times"></i></td>
-                  <td><i class="fas fa-check"></i></td>
+                  <td><i className="fas fa-check"></i></td>
                   <td><i className="fas fa-check"></i></td>
                 </tr>
                 <tr>

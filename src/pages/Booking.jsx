@@ -468,7 +468,7 @@ export default function Booking({ initialParams, onNavigate, showToast, addBooki
                   <p><strong>Date & Time:</strong> {date || '-'} at {time || '-'}</p>
                 </div>
 
-                <div class="form-navigation">
+                <div className="form-navigation">
                   <button type="button" className="btn btn-secondary" onClick={handlePrevStep}>
                     <i className="fas fa-arrow-left"></i> Previous
                   </button>

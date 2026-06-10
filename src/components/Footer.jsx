@@ -16,15 +16,15 @@ export default function Footer({ setActivePage, showToast }) {
       <div className="container footer-grid">
         <div className="footer-brand">
           <a href="#" className="logo" onClick={(e) => { e.preventDefault(); setActivePage('home'); }} style={{ color: 'white' }}>
-            <i class="fas fa-tools logo-icon"></i>
+            <i className="fas fa-tools logo-icon"></i>
             GS <span style={{ color: 'var(--accent-color)' }}>Automobiles</span>
           </a>
           <p>Your one-stop destination for premium car repair and maintenance services. Trusted by 10,000+ car owners across multiple brands.</p>
           <div className="social-links">
             <a href="#" aria-label="Facebook"><i className="fab fa-facebook-f"></i></a>
-            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" aria-label="Twitter"><i className="fab fa-twitter"></i></a>
+            <a href="#" aria-label="Instagram"><i className="fab fa-instagram"></i></a>
+            <a href="#" aria-label="LinkedIn"><i className="fab fa-linkedin-in"></i></a>
           </div>
         </div>
         
