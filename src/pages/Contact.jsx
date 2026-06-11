@@ -2,255 +2,411 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Contact({ onNavigate, showToast }) {
-  // Emergency Dispatch States
-  const [activeDispatch, setActiveDispatch] = useState(null);
-  const [dispatchLog, setDispatchLog] = useState([]);
-  const [dispatching, setDispatching] = useState(false);
+  const [contactMethod, setContactMethod] = useState(null); // 'whatsapp' | 'gmail' | null
+  const [showGmailModal, setShowGmailModal] = useState(false);
+  const [carBrand, setCarBrand] = useState('');
+  const [carModel, setCarModel] = useState('');
+  const [details, setDetails] = useState('');
+  const [query, setQuery] = useState('');
 
-  // Near Garages List
-  const allGarages = [
-    { id: 1, name: 'GS West Main Garage', distance: '1.8 km', rating: '4.9', zip: '110001', address: 'Plot 4, Karol Bagh Metro Sector, New Delhi' },
-    { id: 2, name: 'GS East Wing Workshop', distance: '3.4 km', rating: '4.8', zip: '110092', address: 'Block D, Preet Vihar Industrial Hub, New Delhi' },
-    { id: 3, name: 'GS South Express Hub', distance: '4.2 km', rating: '4.7', zip: '110016', address: 'Plot 12, Hauz Khas Ring Road, New Delhi' },
-    { id: 4, name: 'GS North Point Center', distance: '6.1 km', rating: '4.8', zip: '110009', address: 'G.T. Karnal Road, Near Model Town, New Delhi' }
-  ];
-
-  const [zipCode, setZipCode] = useState('');
-  const [filteredGarages, setFilteredGarages] = useState(allGarages);
-
-  // Form State
-  const [cName, setCName] = useState('');
-  const [cEmail, setCEmail] = useState('');
-  const [cMessage, setCMessage] = useState('');
-
-  // Handle Contact Submit
-  const handleContactSubmit = (e) => {
+  const handleWhatsAppContact = (e) => {
     e.preventDefault();
-    if (cName && cEmail && cMessage) {
-      showToast('Message sent! Our support team will write back shortly.', 'success');
-      setCName('');
-      setCEmail('');
-      setCMessage('');
-    }
-  };
-
-  // Handle emergency trigger
-  const handleTriggerEmergency = (type) => {
-    setActiveDispatch(type);
-    setDispatching(true);
-    setDispatchLog(['Initializing GPS telemetry...', 'Acquiring satellite lock...']);
-
-    // Sequence log updates
-    setTimeout(() => {
-      setDispatchLog(prev => [...prev, 'Broadcasting emergency packet...']);
-    }, 800);
-
-    setTimeout(() => {
-      setDispatchLog(prev => [...prev, 'Dispatch approved by hub manager.']);
-    }, 1800);
-
-    setTimeout(() => {
-      setDispatchLog(prev => [...prev, 'Mechanic Allocated: Vinay Singh (Service Van #4)']);
-    }, 2800);
-
-    setTimeout(() => {
-      setDispatchLog(prev => [...prev, 'ETA: 12 minutes. Telemetry updates active.']);
-      setDispatching(false);
-      showToast('Roadside Assist Dispatched!', 'success');
-    }, 3800);
-  };
-
-  // Filter garages
-  const handleSearchGarages = (e) => {
-    e.preventDefault();
-    if (!zipCode.trim()) {
-      setFilteredGarages(allGarages);
+    if (!carBrand || !carModel || !query) {
+      if (showToast) showToast('Please fill out all required fields.', 'error');
       return;
     }
 
-    const match = allGarages.filter(g => g.zip.includes(zipCode.trim()) || g.address.toLowerCase().includes(zipCode.toLowerCase().trim()));
-    setFilteredGarages(match);
+    const text = `Hi,
+Thank you for contacting GS Automobiles. To help us assist you better, please provide the following details:
+
+🚗 Car Brand: ${carBrand}
+🚘 Car Model: ${carModel}
+🛣️ Kilometers Driven: ${details || ''}
+🔧 Issue / Service Required: ${query}
+
+Our technician will review the details and get in touch with you shortly.
+
+Thank you!
+GS Automobiles`;
+    const url = `https://wa.me/919999938499?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank');
+    if (showToast) showToast('Redirecting to WhatsApp...', 'success');
+  };
+
+  const handleGmailContact = (e) => {
+    e.preventDefault();
+    setShowGmailModal(true);
   };
 
   return (
-    <motion.section 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="section" 
-      style={{ paddingTop: '120px' }}
-    >
-      <div className="container">
-        <div className="section-header">
-          <h1 className="section-title">Contact & <span>Roadside Assistance</span></h1>
-          <p className="section-subtitle">Reach out to our support team, search near service stations, or trigger instant emergency roadside dispatch.</p>
-        </div>
-
-        <div className="contact-layout-grid">
-          {/* Form */}
-          <div className="glass-card" style={{ padding: '30px' }}>
-            <h3 style={{ marginBottom: '20px' }}>
-              <i className="fas fa-paper-plane" style={{ color: 'var(--accent-color)', marginRight: '8px' }}></i> Write to Us
-            </h3>
-            <form onSubmit={handleContactSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-              <div className="form-group">
-                <label>Your Name</label>
-                <input 
-                  type="text" 
-                  placeholder="Full Name" 
-                  required 
-                  value={cName}
-                  onChange={(e) => setCName(e.target.value)}
-                />
-              </div>
-              <div className="form-group">
-                <label>Email Address</label>
-                <input 
-                  type="email" 
-                  placeholder="name@domain.com" 
-                  required 
-                  value={cEmail}
-                  onChange={(e) => setCEmail(e.target.value)}
-                />
-              </div>
-              <div className="form-group">
-                <label>Message</label>
-                <textarea 
-                  rows="4" 
-                  placeholder="Type your message here..." 
-                  required
-                  value={cMessage}
-                  onChange={(e) => setCMessage(e.target.value)}
-                />
-              </div>
-              <button type="submit" className="btn btn-primary">Send Message</button>
-            </form>
-
-            <div style={{ marginTop: '30px', display: 'flex', flexDirection: 'column', gap: '15px' }}>
-              <div className="contact-detail-row">
-                <div className="contact-detail-icon"><i className="fas fa-phone-alt"></i></div>
-                <div>
-                  <div style={{ fontWeight: 600 }}>Helpline Hotline</div>
-                  <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>1800-123-4567 (Toll Free)</div>
-                </div>
-              </div>
-              <div className="contact-detail-row">
-                <div className="contact-detail-icon"><i className="fas fa-map-marker-alt"></i></div>
-                <div>
-                  <div style={{ fontWeight: 600 }}>Headquarters Office</div>
-                  <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Tech Park Block C, Preet Vihar, New Delhi</div>
-                </div>
-              </div>
-            </div>
+    <>
+      <motion.section 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="section" 
+        style={{ paddingTop: '120px' }}
+      >
+        <div className="container">
+          <div className="section-header">
+            <h1 className="section-title">Contact <span>GS Automobiles</span></h1>
+            <p className="section-subtitle">Reach out to our support team or book a service appointment at our Indirapuram workshop.</p>
           </div>
 
-          {/* Garage Search map */}
-          <div className="glass-card" style={{ padding: '30px' }}>
-            <h3 style={{ marginBottom: '20px' }}>
-              <i className="fas fa-map-marked-alt" style={{ color: 'var(--accent-color)', marginRight: '8px' }}></i> Find Nearest Garage
-            </h3>
-            
-            <form onSubmit={handleSearchGarages} className="garage-search-row">
-              <input 
-                type="text" 
-                placeholder="Enter ZIP Code or City..." 
-                value={zipCode}
-                onChange={(e) => setZipCode(e.target.value)}
-              />
-              <button type="submit" className="btn btn-secondary">Search</button>
-            </form>
+          <div className="contact-layout-grid">
+            {/* Write to Us Cards */}
+            <div className="glass-card" style={{ padding: '30px', minHeight: '450px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+              
+              <AnimatePresence mode="wait">
+                {contactMethod === null ? (
+                  <motion.div
+                    key="channels"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <h3 style={{ marginBottom: '15px', fontSize: '1.3rem', fontWeight: 800 }}>
+                      <i className="fas fa-paper-plane" style={{ color: 'var(--accent-color)', marginRight: '8px' }}></i> Write to Us
+                    </h3>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '25px', lineHeight: '1.6' }}>
+                      Select your preferred communication channel to send us details about your vehicle.
+                    </p>
 
-            <div className="garage-list" style={{ maxHeight: '350px', overflowY: 'auto', paddingRight: '5px' }}>
-              {filteredGarages.length === 0 ? (
-                <p style={{ color: 'var(--text-muted)', textAlign: 'center' }}>No workshops found in this region.</p>
-              ) : (
-                filteredGarages.map(g => (
-                  <div key={g.id} className="garage-item glass-card" style={{ padding: '15px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div>
-                      <div className="garage-title" style={{ fontSize: '0.95rem' }}>{g.name}</div>
-                      <div className="garage-meta" style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>
-                        {g.address} &bull; <strong style={{ color: 'var(--accent-color)' }}>{g.distance}</strong>
-                      </div>
-                    </div>
-                    <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '5px' }}>
-                      <div style={{ fontSize: '0.85rem', color: '#F59E0B' }}><i className="fas fa-star"></i> {g.rating}</div>
-                      <button 
-                        onClick={() => onNavigate('booking', { notes: `Direct referral from ${g.name}` })} 
-                        className="btn btn-primary" 
-                        style={{ padding: '5px 10px', fontSize: '0.75rem' }}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', marginBottom: '25px' }}>
+                      {/* WhatsApp option */}
+                      <motion.div 
+                        whileHover={{ scale: 1.02, borderColor: '#25D366' }}
+                        onClick={() => setContactMethod('whatsapp')}
+                        style={{
+                          background: 'rgba(255, 255, 255, 0.02)',
+                          border: '1px solid var(--border-color)',
+                          borderRadius: 'var(--radius-md)',
+                          padding: '18px 20px',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '15px',
+                          transition: 'border-color 0.3s ease',
+                          textAlign: 'left'
+                        }}
                       >
-                        Book
-                      </button>
+                        <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: 'rgba(37, 211, 102, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #25D366', flexShrink: 0 }}>
+                          <i className="fab fa-whatsapp" style={{ fontSize: '1.3rem', color: '#25D366' }}></i>
+                        </div>
+                        <div>
+                          <h4 style={{ fontSize: '0.95rem', fontWeight: 700, margin: '0 0 2px 0' }}>Write via WhatsApp</h4>
+                          <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Send inquiry template with car details</span>
+                        </div>
+                      </motion.div>
+
+                      {/* Gmail option */}
+                      <motion.div 
+                        whileHover={{ scale: 1.02, borderColor: '#EA4335' }}
+                        onClick={() => setShowGmailModal(true)}
+                        style={{
+                          background: 'rgba(255, 255, 255, 0.02)',
+                          border: '1px solid var(--border-color)',
+                          borderRadius: 'var(--radius-md)',
+                          padding: '18px 20px',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '15px',
+                          transition: 'border-color 0.3s ease',
+                          textAlign: 'left'
+                        }}
+                      >
+                        <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: 'rgba(234, 67, 53, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #EA4335', flexShrink: 0 }}>
+                          <i className="fas fa-envelope" style={{ fontSize: '1.2rem', color: '#EA4335' }}></i>
+                        </div>
+                        <div>
+                          <h4 style={{ fontSize: '0.95rem', fontWeight: 700, margin: '0 0 2px 0' }}>Write via Gmail</h4>
+                          <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Send automated email booking details</span>
+                        </div>
+                      </motion.div>
                     </div>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-        </div>
+                  </motion.div>
+                ) : contactMethod === 'whatsapp' ? (
+                  <motion.div
+                    key="whatsapp-msg"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <div style={{ width: '55px', height: '55px', borderRadius: '50%', background: 'rgba(37, 211, 102, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 15px', border: '1px solid #25D366' }}>
+                      <i className="fab fa-whatsapp" style={{ fontSize: '1.6rem', color: '#25D366' }}></i>
+                    </div>
+                    <h3 style={{ fontSize: '1.3rem', fontWeight: 800, marginBottom: '15px', textAlign: 'center' }}>WhatsApp Inquiry</h3>
+                    
+                    <form onSubmit={handleWhatsAppContact} style={{ textAlign: 'left' }}>
+                      <div className="form-grid" style={{ gap: '15px', marginBottom: '15px' }}>
+                        <div>
+                          <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>Car Brand *</label>
+                          <input 
+                            type="text" 
+                            placeholder="e.g. Toyota" 
+                            value={carBrand}
+                            onChange={(e) => setCarBrand(e.target.value)}
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>Car Model *</label>
+                          <input 
+                            type="text" 
+                            placeholder="e.g. Fortuner" 
+                            value={carModel}
+                            onChange={(e) => setCarModel(e.target.value)}
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div style={{ marginBottom: '15px' }}>
+                        <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>Kilometers Driven (Optional)</label>
+                        <input 
+                          type="text" 
+                          placeholder="e.g. 45,000 km" 
+                          value={details}
+                          onChange={(e) => setDetails(e.target.value)}
+                        />
+                      </div>
+                      <div style={{ marginBottom: '25px' }}>
+                        <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>My Query / Problem *</label>
+                        <textarea 
+                          rows="3"
+                          placeholder="Describe your issue or questions here..." 
+                          value={query}
+                          onChange={(e) => setQuery(e.target.value)}
+                          required
+                          style={{ resize: 'none' }}
+                        />
+                      </div>
 
-        {/* Roadside Emergency assistance */}
-        <div className="roadside-assistance-dashboard glass-card">
-          <h2 style={{ color: 'var(--danger)', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <i className="fas fa-ambulance"></i> 24/7 Roadside Assistance Center
-          </h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', marginBottom: '30px' }}>
-            Stranded on the road? Tap your breakdown category below to transmit GPS telemetry coordinates. We dispatch a technician instantly.
-          </p>
+                      <div style={{ display: 'flex', gap: '10px' }}>
+                        <button type="button" onClick={() => setContactMethod(null)} className="btn btn-secondary" style={{ flex: 1, padding: '10px', fontSize: '0.9rem' }}>
+                          <i className="fas fa-arrow-left"></i> Back
+                        </button>
+                        <button type="submit" className="btn btn-primary" style={{ flex: 2, background: '#25D366', borderColor: '#25D366', color: '#FFF', padding: '10px', fontSize: '0.9rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                          <i className="fab fa-whatsapp"></i> Send on WhatsApp
+                        </button>
+                      </div>
+                    </form>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="gmail-msg"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <div style={{ width: '55px', height: '55px', borderRadius: '50%', background: 'rgba(234, 67, 53, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 15px', border: '1px solid #EA4335' }}>
+                      <i className="fas fa-envelope" style={{ fontSize: '1.5rem', color: '#EA4335' }}></i>
+                    </div>
+                    <h3 style={{ fontSize: '1.3rem', fontWeight: 800, marginBottom: '15px', textAlign: 'center' }}>Gmail Inquiry</h3>
+                    
+                    <form onSubmit={handleGmailContact} style={{ textAlign: 'left' }}>
+                      <div className="form-grid" style={{ gap: '15px', marginBottom: '15px' }}>
+                        <div>
+                          <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>Car Brand *</label>
+                          <input 
+                            type="text" 
+                            placeholder="e.g. Honda" 
+                            value={carBrand}
+                            onChange={(e) => setCarBrand(e.target.value)}
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>Car Model *</label>
+                          <input 
+                            type="text" 
+                            placeholder="e.g. Civic" 
+                            value={carModel}
+                            onChange={(e) => setCarModel(e.target.value)}
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div style={{ marginBottom: '15px' }}>
+                        <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>Kilometers Driven (Optional)</label>
+                        <input 
+                          type="text" 
+                          placeholder="e.g. 45,000 km" 
+                          value={details}
+                          onChange={(e) => setDetails(e.target.value)}
+                        />
+                      </div>
+                      <div style={{ marginBottom: '25px' }}>
+                        <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>My Query / Problem *</label>
+                        <textarea 
+                          rows="3"
+                          placeholder="Describe your issue or questions here..." 
+                          value={query}
+                          onChange={(e) => setQuery(e.target.value)}
+                          required
+                          style={{ resize: 'none' }}
+                        />
+                      </div>
 
-          <div className="roadside-grid">
-            <div className="roadside-card glass-card" onClick={() => handleTriggerEmergency('Flat Tire')}>
-              <i className="fas fa-car-crash"></i>
-              <div className="roadside-card-name">Flat Tire</div>
-            </div>
-            <div className="roadside-card glass-card" onClick={() => handleTriggerEmergency('Empty Fuel')}>
-              <i className="fas fa-gas-pump"></i>
-              <div className="roadside-card-name">Out of Fuel</div>
-            </div>
-            <div className="roadside-card glass-card" onClick={() => handleTriggerEmergency('Battery Jump')}>
-              <i className="fas fa-car-battery"></i>
-              <div className="roadside-card-name">Dead Battery</div>
-            </div>
-            <div className="roadside-card glass-card" onClick={() => handleTriggerEmergency('Towing Assist')}>
-              <i className="fas fa-truck-pickup"></i>
-              <div className="roadside-card-name">Tow Request</div>
-            </div>
-            <div className="roadside-card glass-card" onClick={() => handleTriggerEmergency('Engine Smoke')}>
-              <i className="fas fa-cloud"></i>
-              <div className="roadside-card-name">Engine Overheat</div>
-            </div>
-          </div>
+                      <div style={{ display: 'flex', gap: '10px' }}>
+                        <button type="button" onClick={() => setContactMethod(null)} className="btn btn-secondary" style={{ flex: 1, padding: '10px', fontSize: '0.9rem' }}>
+                          <i className="fas fa-arrow-left"></i> Back
+                        </button>
+                        <button type="submit" className="btn btn-primary" style={{ flex: 2, background: '#EA4335', borderColor: '#EA4335', color: '#FFF', padding: '10px', fontSize: '0.9rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                          <i className="fas fa-envelope"></i> Send via Gmail
+                        </button>
+                      </div>
+                    </form>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
-          {/* Dispatch console outputs */}
-          <AnimatePresence>
-            {activeDispatch && (
-              <motion.div 
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                style={{ overflow: 'hidden' }}
-              >
-                <div style={{ padding: '20px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(239, 68, 68, 0.2)', borderRadius: 'var(--radius-md)' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '15px' }}>
-                    <strong>Breakdown Request: {activeDispatch}</strong>
-                    {dispatching ? (
-                      <span style={{ color: 'var(--warning)' }}><i className="fas fa-spinner fa-spin"></i> Dispatching...</span>
-                    ) : (
-                      <span style={{ color: 'var(--success)' }}><i className="fas fa-check-circle"></i> Dispatched</span>
-                    )}
-                  </div>
-
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontFamily: 'monospace', fontSize: '0.85rem' }}>
-                    {dispatchLog.map((log, idx) => (
-                      <div key={idx} style={{ color: '#10B981' }}>&gt; {log}</div>
-                    ))}
+              <div style={{ marginTop: '30px', display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                <div className="contact-detail-row">
+                  <div className="contact-detail-icon"><i className="fas fa-map-marker-alt"></i></div>
+                  <div>
+                    <div style={{ fontWeight: 600 }}>Workshop Location Address</div>
+                    <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Plot no.677, Sucheta Kriplani Marg, near igl cng pump, Shakti Khand III, Indirapuram, Ghaziabad, Uttar Pradesh 201014</div>
                   </div>
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                <div className="contact-detail-row">
+                  <div className="contact-detail-icon"><i className="fas fa-phone-alt"></i></div>
+                  <div>
+                    <div style={{ fontWeight: 600 }}>Phone / WhatsApp Support</div>
+                    <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+                      <a href="tel:+919999938499" style={{ color: 'var(--text-main)', textDecoration: 'none' }}>+91 99999 38499</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Main Workshop Location */}
+            <div className="glass-card" style={{ padding: '30px' }}>
+              <h3 style={{ marginBottom: '20px' }}>
+                <i className="fas fa-map-marked-alt" style={{ color: 'var(--accent-color)', marginRight: '8px' }}></i> Our Workshop Location
+              </h3>
+              <div className="workshop-item glass-card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '15px', border: '1px solid rgba(255, 107, 0, 0.2)' }}>
+                <div>
+                  <div className="workshop-title" style={{ fontSize: '1.2rem', fontWeight: '700', color: 'var(--accent-color)' }}>GS Automobiles</div>
+                  <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginTop: '8px', lineHeight: '1.5' }}>
+                    <i className="fas fa-map-marker-alt" style={{ color: 'var(--accent-color)', marginRight: '8px', width: '16px' }}></i>
+                    Plot no.677, Sucheta Kriplani Marg, near igl cng pump, Shakti Khand III, Indirapuram, Ghaziabad, Uttar Pradesh 201014
+                  </div>
+                  <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginTop: '8px' }}>
+                    <i className="fas fa-phone-alt" style={{ color: 'var(--accent-color)', marginRight: '8px', width: '16px' }}></i>
+                    <strong>Phone / WhatsApp:</strong> <a href="tel:+919999938499" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>+91 99999 38499</a>
+                  </div>
+                  <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginTop: '8px' }}>
+                    <i className="fas fa-calendar-alt" style={{ color: 'var(--accent-color)', marginRight: '8px', width: '16px' }}></i>
+                    <strong>Year of Establishment:</strong> 2009
+                  </div>
+                  <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginTop: '8px' }}>
+                    <i className="fas fa-clock" style={{ color: 'var(--accent-color)', marginRight: '8px', width: '16px' }}></i>
+                    <strong>Working Hours:</strong> Everyday: 10:00 AM - 6:00 PM
+                  </div>
+                  
+                  <div style={{ marginTop: '15px', borderRadius: 'var(--radius-md)', overflow: 'hidden', height: '220px', border: '1px solid var(--border-color)', position: 'relative' }}>
+                    <iframe 
+                      title="GS Automobiles Map"
+                      src="https://maps.google.com/maps?q=GS%20Automobiles,%20Sucheta%20Kriplani%20Marg,%20near%20igl%20cng%20pump,%20Shakti%20Khand%20III,%20Indirapuram,%20Ghaziabad,%20Uttar%20Pradesh,%20India&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      allowFullScreen=""
+                      loading="lazy"
+                    ></iframe>
+                    <a 
+                      href="https://www.google.com/maps/search/?api=1&query=GS+Automobiles,+Sucheta+Kriplani+Marg,+near+igl+cng+pump,+Shakti+Khand+III,+Indirapuram,+Ghaziabad,+Uttar+Pradesh,+India"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ 
+                        position: 'absolute', 
+                        bottom: '10px', 
+                        right: '10px', 
+                        background: 'var(--accent-color)', 
+                        color: 'white', 
+                        padding: '6px 12px', 
+                        borderRadius: 'var(--radius-sm)', 
+                        fontSize: '0.8rem', 
+                        fontWeight: 600,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '5px',
+                        boxShadow: '0 4px 10px rgba(0,0,0,0.3)',
+                        textDecoration: 'none'
+                      }}
+                    >
+                      <i className="fas fa-external-link-alt"></i> Open Google Maps
+                    </a>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => onNavigate('booking')} 
+                  className="btn btn-primary" 
+                  style={{ width: '100%', padding: '10px', fontSize: '0.95rem', marginTop: '10px' }}
+                >
+                  Book a Service at this Workshop
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </motion.section>
+      </motion.section>
+
+      {/* Gmail Modal Overlay */}
+      <AnimatePresence>
+        {showGmailModal && (
+          <div className="whatsapp-modal-overlay" onClick={() => setShowGmailModal(false)}>
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="whatsapp-modal glass-card"
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                border: '1px solid rgba(234, 67, 53, 0.25)',
+                boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.4)',
+                maxWidth: '480px',
+                textAlign: 'center'
+              }}
+            >
+              {/* Close Button */}
+              <button className="whatsapp-modal-close" onClick={() => setShowGmailModal(false)}>
+                &times;
+              </button>
+
+              {/* Email Icon Header */}
+              <div style={{ width: '70px', height: '70px', borderRadius: '50%', background: 'rgba(234, 67, 53, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', border: '1px solid #EA4335' }}>
+                <i className="fas fa-envelope" style={{ fontSize: '2.2rem', color: '#EA4335' }}></i>
+              </div>
+
+              {/* Header Text */}
+              <h3 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '15px' }}>
+                Email Support Coming Soon
+              </h3>
+              
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '25px' }}>
+                Thank you for your interest in contacting GS Automobiles. Our email support feature is currently under development and will be available soon.
+                <br /><br />
+                For immediate assistance, please contact us via WhatsApp.
+              </p>
+
+              {/* Action Button */}
+              <button 
+                onClick={() => setShowGmailModal(false)} 
+                className="btn btn-primary" 
+                style={{ width: '100%', padding: '12px', fontSize: '0.95rem', background: '#EA4335', borderColor: '#EA4335', color: '#FFF', border: 'none' }}
+              >
+                Got It
+              </button>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

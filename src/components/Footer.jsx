@@ -1,16 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-export default function Footer({ setActivePage, showToast }) {
-  const [email, setEmail] = useState('');
-
-  const handleSubscribe = (e) => {
-    e.preventDefault();
-    if (email) {
-      showToast('Successfully subscribed to newsletter!', 'success');
-      setEmail('');
-    }
-  };
-
+export default function Footer({ setActivePage }) {
   return (
     <footer>
       <div className="container footer-grid">
@@ -43,33 +33,38 @@ export default function Footer({ setActivePage, showToast }) {
           <ul>
             <li><a href="#home" onClick={(e) => { e.preventDefault(); setActivePage('home'); }}>Home</a></li>
             <li><a href="#booking" onClick={(e) => { e.preventDefault(); setActivePage('booking'); }}>Book Appointment</a></li>
-            <li><a href="#tracking" onClick={(e) => { e.preventDefault(); setActivePage('tracking'); }}>Track Status</a></li>
             <li><a href="#contact" onClick={(e) => { e.preventDefault(); setActivePage('contact'); }}>Emergency Support</a></li>
-            <li><a href="#admin" onClick={(e) => { e.preventDefault(); setActivePage('admin'); }}>Admin Login</a></li>
           </ul>
         </div>
+      </div>
 
-        <div className="footer-newsletter">
-          <h3>Newsletter</h3>
-          <p style={{ color: '#94A3B8', fontSize: '0.9rem' }}>Subscribe to get the latest maintenance tips & discount coupons.</p>
-          <form className="newsletter-form" onSubmit={handleSubscribe}>
-            <input 
-              type="email" 
-              placeholder="Your Email Address" 
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <button type="submit" className="btn btn-primary">Subscribe</button>
-          </form>
+      {/* SEO Searches Section */}
+      <div className="container footer-seo-section" style={{ borderTop: '1px solid var(--border-color)', paddingTop: '25px', marginTop: '25px', paddingBottom: '10px' }}>
+        <h4 style={{ fontSize: '0.85rem', fontWeight: 700, marginBottom: '12px', color: 'var(--text-main)', letterSpacing: '0.5px', textTransform: 'uppercase' }}>Service Areas &amp; Popular Searches</h4>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.72rem', color: 'var(--text-muted)', lineHeight: '1.6', textAlign: 'left', opacity: 0.75 }}>
+          <div>
+            <strong style={{ color: 'var(--text-main)' }}>Indirapuram:</strong> Car Service Center &bull; Best Car Service Center &bull; Car Repair Services &bull; General Car Service &bull; Car AC Repair &bull; Battery Replacement Service &bull; Brake Repair Services &bull; Car Denting and Painting &bull; Car Washing and Detailing Services &bull; Engine Repair Services &bull; Suspension Repair Services
+          </div>
+          <div>
+            <strong style={{ color: 'var(--text-main)' }}>Ghaziabad:</strong> Car Service Center &bull; Best Car Service Center &bull; Car Repair Shop &bull; Car AC Service &bull; Periodic Car Maintenance &bull; Car Battery Replacement &bull; Car Brake Repair &bull; Car Denting and Painting Services &bull; Car Detailing Services &bull; Engine Diagnostics and Repair
+          </div>
+          <div>
+            <strong style={{ color: 'var(--text-main)' }}>Noida:</strong> Car Service Center &bull; Best Car Service Center &bull; Car Repair Services &bull; Car AC Repair Service &bull; Car Battery Replacement &bull; Brake Repair Services &bull; Engine Repair Services &bull; Car Denting and Painting &bull; Car Detailing Services &bull; Periodic Car Service &bull; Car Inspection Services
+          </div>
+          <div>
+            <strong style={{ color: 'var(--text-main)' }}>Delhi NCR:</strong> Car Service Center &bull; Best Car Service Center &bull; Car Repair Services &bull; Car AC Service &bull; Engine Repair Services &bull; Car Battery Replacement &bull; Brake Repair Services &bull; Car Denting and Painting Services &bull; Car Detailing Services &bull; Car Wash Services &bull; Doorstep Car Service
+          </div>
+          <div>
+            <strong style={{ color: 'var(--text-main)' }}>Popular Queries:</strong> Affordable Car Service Center in Noida &bull; Trusted Car Repair Shop in Ghaziabad &bull; Same Day Car Service in Indirapuram &bull; Doorstep Car Service in Delhi NCR &bull; Multi Brand Car Service Center in Noida &bull; Car Garage Near Me &bull; Best Car Mechanic in Indirapuram &bull; Emergency Car Repair Services in Noida
+          </div>
         </div>
       </div>
+      
       <div className="container footer-bottom">
         <p>&copy; 2026 GS Automobiles. All Rights Reserved.</p>
         <div style={{ display: 'flex', gap: '20px' }}>
           <a href="#">Privacy Policy</a>
           <a href="#">Terms of Use</a>
-          <a href="#admin" onClick={(e) => { e.preventDefault(); setActivePage('admin'); }} style={{ opacity: 0.12, cursor: 'default' }}>Admin</a>
         </div>
       </div>
     </footer>

@@ -1,44 +1,47 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 export default function Reviews({ showToast, reviews, setReviews }) {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
 
-  // Form State
-  const [name, setName] = useState('');
-  const [rating, setRating] = useState(5);
-  const [comment, setComment] = useState('');
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const getVisibleCardsCount = () => {
+    if (windowWidth < 768) return 1;  // Mobile
+    if (windowWidth < 1024) return 2; // Tablet
+    return 3;                         // Desktop
+  };
+
+  const visibleCards = getVisibleCardsCount();
+  const maxIndex = Math.max(0, reviews.length - visibleCards);
 
   const handleNextSlide = () => {
-    setCurrentSlide(prev => (prev === reviews.length - 1 ? 0 : prev + 1));
+    setCurrentIndex(prev => (prev >= maxIndex ? 0 : prev + 1));
   };
 
   const handlePrevSlide = () => {
-    setCurrentSlide(prev => (prev === 0 ? reviews.length - 1 : prev - 1));
+    setCurrentIndex(prev => (prev === 0 ? maxIndex : prev - 1));
   };
 
-  const handleSubmitReview = (e) => {
-    e.preventDefault();
-    if (!name || !comment) {
-      showToast('Please fill out all review fields.', 'error');
-      return;
+  // Keep index inside bounds when viewport size / visibleCards changes
+  useEffect(() => {
+    if (currentIndex > maxIndex) {
+      setCurrentIndex(maxIndex);
     }
+  }, [visibleCards, maxIndex, currentIndex]);
 
-    const newRev = {
-      id: Date.now(),
-      name,
-      stars: rating,
-      comment,
-      img: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150&q=80' // default avatar
-    };
-
-    setReviews(prev => [newRev, ...prev]);
-    setName('');
-    setComment('');
-    setRating(5);
-    setCurrentSlide(0);
-    showToast('Thank you for submitting your review!', 'success');
-  };
+  // Auto-slide every 3 seconds, resets timer on manual interaction
+  useEffect(() => {
+    const timer = setInterval(() => {
+      handleNextSlide();
+    }, 3000);
+    return () => clearInterval(timer);
+  }, [currentIndex, maxIndex]);
 
   return (
     <motion.section 
@@ -49,104 +52,99 @@ export default function Reviews({ showToast, reviews, setReviews }) {
       style={{ paddingTop: '120px' }}
     >
       <div className="container">
-        <div className="section-header">
-          <h1 className="section-title">Customer <span>Reviews</span></h1>
-          <p className="section-subtitle">Read testimonials from our valuable clients or submit your own feedback.</p>
+        <div className="section-header animate__animated animate__fadeIn">
+          <h1 className="section-title">What Our <span>Customers Say</span></h1>
+          <p className="section-subtitle" style={{ maxWidth: '800px', margin: '0 auto', lineHeight: '1.6' }}>
+            Trusted by car owners across Ghaziabad , Noida , Delhi NCR Ensure excellent readability and accessibility.
+          </p>
         </div>
 
         {/* Carousel Container */}
-        <div className="reviews-slider-container glass-card">
-          <div className="reviews-wrapper">
-            <AnimatePresence mode="wait">
-              {reviews.map((rev, idx) => {
-                if (idx !== currentSlide) return null;
+        <div className="reviews-carousel-outer">
+          <div className="reviews-carousel-container">
+            <div 
+              className="reviews-carousel-track"
+              style={{
+                transform: `translateX(-${currentIndex * (100 / visibleCards)}%)`,
+                transition: 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
+              }}
+            >
+              {reviews.map((rev) => {
+                const stars = rev.stars || rev.rating || 5;
+                const comment = rev.comment || rev.review || '';
+                const name = rev.name || '';
                 return (
-                  <motion.div 
-                    key={rev.id}
-                    initial={{ opacity: 0, x: 50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -50 }}
-                    transition={{ duration: 0.3 }}
-                    className="review-slide-card"
+                  <div 
+                    key={rev.id} 
+                    className="reviews-carousel-slide"
+                    style={{
+                      width: `${100 / visibleCards}%`
+                    }}
                   >
-                    <img src={rev.img} alt={rev.name} className="review-author-img" />
-                    <div className="rating-stars">
-                      {Array.from({ length: 5 }).map((_, i) => (
-                        <i key={i} className={`${i < rev.stars ? 'fas' : 'far'} fa-star`}></i>
-                      ))}
+                    <div className="review-card glass-card">
+                      <div className="review-card-header">
+                        <div className="review-card-stars" aria-label={`${stars} star rating`}>
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <i key={i} className={`${i < stars ? 'fas' : 'far'} fa-star`} />
+                          ))}
+                        </div>
+                        <div className="review-google-logo" title="Google Review">
+                          <i className="fab fa-google" style={{ color: '#4285F4' }} />
+                        </div>
+                      </div>
+                      <blockquote className="review-card-content">
+                        "{comment}"
+                      </blockquote>
+                      <div className="review-card-footer">
+                        <div className="review-user-avatar" aria-hidden="true">
+                          <i className="fas fa-user" />
+                        </div>
+                        <div className="review-user-info">
+                          <cite className="review-user-name">{name}</cite>
+                          <span className="review-verified-text">
+                            <i className="fas fa-check-circle review-verified-icon" />
+                            Verified Customer (Google)
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                    <p className="review-comment">"{rev.comment}"</p>
-                    <div className="review-author-name">{rev.name}</div>
-                  </motion.div>
+                  </div>
                 );
               })}
-            </AnimatePresence>
+            </div>
           </div>
 
-          {/* Navigation arrows */}
-          <button className="slider-btn slider-btn-prev" onClick={handlePrevSlide} aria-label="Previous Review">
-            <i className="fas fa-chevron-left"></i>
+          {/* Navigation Arrows */}
+          <button 
+            className="carousel-btn carousel-btn-prev" 
+            onClick={handlePrevSlide} 
+            aria-label="Previous reviews"
+            title="Previous Reviews"
+          >
+            <i className="fas fa-chevron-left" />
           </button>
-          <button className="slider-btn slider-btn-next" onClick={handleNextSlide} aria-label="Next Review">
-            <i className="fas fa-chevron-right"></i>
+          <button 
+            className="carousel-btn carousel-btn-next" 
+            onClick={handleNextSlide} 
+            aria-label="Next reviews"
+            title="Next Reviews"
+          >
+            <i className="fas fa-chevron-right" />
           </button>
-
-          {/* Dots */}
-          <div className="slider-dots">
-            {reviews.map((_, idx) => (
-              <div 
-                key={idx} 
-                className={`slider-dot ${idx === currentSlide ? 'active' : ''}`}
-                onClick={() => setCurrentSlide(idx)}
-              ></div>
-            ))}
-          </div>
         </div>
 
-        {/* Submission Form */}
-        <div className="glass-card" style={{ maxWidth: '600px', margin: '50px auto 0', padding: '35px' }}>
-          <h3 style={{ marginBottom: '20px', textAlign: 'center' }}>
-            <i className="fas fa-pen-nib" style={{ color: 'var(--accent-color)', marginRight: '8px' }}></i> Submit Your Feedback
-          </h3>
-
-          <form onSubmit={handleSubmitReview} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            <div className="form-group">
-              <label>Your Name</label>
-              <input 
-                type="text" 
-                placeholder="Enter your name" 
-                required 
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Rating Score</label>
-              <select value={rating} onChange={(e) => setRating(+e.target.value)}>
-                <option value="5">5 Stars (Excellent)</option>
-                <option value="4">4 Stars (Good)</option>
-                <option value="3">3 Stars (Average)</option>
-                <option value="2">2 Stars (Poor)</option>
-                <option value="1">1 Star (Critical)</option>
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label>Review Comment</label>
-              <textarea 
-                rows="4" 
-                placeholder="Share details of your experience..." 
-                required
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-              />
-            </div>
-
-            <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>
-              <i className="fas fa-paper-plane"></i> Submit Review
-            </button>
-          </form>
+        {/* Dots Indicators */}
+        <div className="slider-dots" style={{ marginTop: '30px' }}>
+          {Array.from({ length: maxIndex + 1 }).map((_, idx) => (
+            <button 
+              key={idx} 
+              className={`slider-dot ${idx === currentIndex ? 'active' : ''}`}
+              onClick={() => setCurrentIndex(idx)}
+              aria-label={`Go to slide page ${idx + 1}`}
+              title={`Slide page ${idx + 1}`}
+              style={{ border: 'none', padding: 0 }}
+            />
+          ))}
         </div>
       </div>
     </motion.section>

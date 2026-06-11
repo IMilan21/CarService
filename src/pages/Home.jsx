@@ -65,10 +65,7 @@ function Counter({ target }) {
 }
 
 export default function Home({ onNavigate, showToast, theme = 'dark-theme', websiteSettings }) {
-  // Brand Estimator State
-  const [estimateBrand, setEstimateBrand] = useState('');
-  const [estimateService, setEstimateService] = useState('');
-  const [estimatedPrice, setEstimatedPrice] = useState(null);
+
 
   // AI Recommendations Wizard State
   const [wizStep, setWizStep] = useState(1);
@@ -83,25 +80,7 @@ export default function Home({ onNavigate, showToast, theme = 'dark-theme', webs
   // FAQ state
   const [activeFaq, setActiveFaq] = useState(null);
 
-  // Handle Estimate Calculate
-  const handleCalculateEstimate = (e) => {
-    e.preventDefault();
-    if (!estimateBrand || !estimateService) return;
 
-    let base = 1500;
-    if (estimateService === 'Basic Package') base = websiteSettings?.priceBasic || 1999;
-    else if (estimateService === 'Standard Package') base = websiteSettings?.priceStandard || 3999;
-    else if (estimateService === 'Premium Package') base = websiteSettings?.pricePremium || 6999;
-    else if (estimateService === 'Car Wash') base = 599;
-
-    const luxury = ['BMW', 'Mercedes-Benz', 'Audi'];
-    const mid = ['Toyota', 'Honda', 'Hyundai', 'Kia', 'Mahindra'];
-
-    if (luxury.includes(estimateBrand)) base = Math.round(base * 1.5);
-    else if (mid.includes(estimateBrand)) base = Math.round(base * 1.1);
-
-    setEstimatedPrice(base);
-  };
 
   // AI Recommendations next step
   const handleWizNext = (step, val) => {
@@ -165,10 +144,11 @@ export default function Home({ onNavigate, showToast, theme = 'dark-theme', webs
 
   // FAQ questions list
   const faqs = [
-    { q: "How often should I get my car serviced?", a: "For most brands, we recommend getting a periodic maintenance check every 10,000 kilometers or once every 6 months, whichever comes first, to keep your engine running smoothly." },
+    { q: "What are the various modes of payment accepted here?", a: "You can make payment via Cash, Visa / Master Card / Rupay, UPI, Net Banking, Paytm, and PhonePe." },
+    { q: "Which is the nearest landmark?", a: "You can easily locate the establishment as it is in close proximity to Balaji Dham Mandir (near IGL CNG Pump, Shakti Khand III, Indirapuram)." },
+    { q: "What are its hours of operation?", a: "The establishment is functional Everyday (Monday to Sunday) from 10:00 AM to 6:00 PM." },
     { q: "Do you use genuine spare parts for repairs?", a: "Yes, we strictly use 100% OEM (Original Equipment Manufacturer) and OES parts certified by car brands to ensure absolute reliability and safety standards." },
-    { q: "How can I track my active car servicing progress?", a: "When you book a service, you receive a Booking ID (e.g. AC-123456). Go to our Track Status page, enter your ID, and view real-time status steps from receiving to delivery." },
-    { q: "What is the pick and drop service coverage?", a: "Our contactless pick and drop service is free for Premium Package bookings. Mid-level and basic service packages can request pick and drop services at a nominal flat charge of ₹299." }
+    { q: "How often should I get my car serviced?", a: "For most brands, we recommend getting a periodic maintenance check every 10,000 kilometers or once every 6 months, whichever comes first." }
   ];
 
   return (
@@ -180,7 +160,7 @@ export default function Home({ onNavigate, showToast, theme = 'dark-theme', webs
     >
       {/* Hero Section */}
       <section className="hero-section" style={{ position: 'relative', overflow: 'hidden' }}>
-        {/* Interactive 4K Garage Diagnostic Hero Backdrop */}
+        {/* Interactive 4K Workshop Diagnostic Hero Backdrop */}
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -259,77 +239,6 @@ export default function Home({ onNavigate, showToast, theme = 'dark-theme', webs
               </a>
             </motion.div>
           </div>
-          
-          <motion.div 
-            initial={{ scale: 0.95, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="hero-search-card glass-card"
-          >
-            <h3>Quick Brand Estimator</h3>
-            <form className="brand-search-form" onSubmit={handleCalculateEstimate}>
-              <div className="search-input-group">
-                <i className="fas fa-car"></i>
-                <select 
-                  value={estimateBrand} 
-                  onChange={(e) => { setEstimateBrand(e.target.value); setEstimatedPrice(null); }}
-                  required
-                >
-                  <option value="">Choose Car Brand</option>
-                  <option value="Toyota">Toyota</option>
-                  <option value="Honda">Honda</option>
-                  <option value="Hyundai">Hyundai</option>
-                  <option value="Maruti Suzuki">Maruti Suzuki</option>
-                  <option value="Tata Motors">Tata Motors</option>
-                  <option value="Mahindra">Mahindra</option>
-                  <option value="Kia">Kia</option>
-                  <option value="BMW">BMW</option>
-                  <option value="Mercedes-Benz">Mercedes-Benz</option>
-                  <option value="Audi">Audi</option>
-                </select>
-              </div>
-              <div className="search-input-group">
-                <i className="fas fa-cogs"></i>
-                <select 
-                  value={estimateService} 
-                  onChange={(e) => { setEstimateService(e.target.value); setEstimatedPrice(null); }}
-                  required
-                >
-                  <option value="">Select Service Type</option>
-                  <option value="Basic Package">Basic Service Package</option>
-                  <option value="Standard Package">Standard Service Package</option>
-                  <option value="Premium Package">Premium Service Package</option>
-                  <option value="Car Wash">Car Detailing & Wash</option>
-                </select>
-              </div>
-              <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>
-                <i className="fas fa-calculator"></i> Calculate Estimate
-              </button>
-            </form>
-
-            <AnimatePresence>
-              {estimatedPrice !== null && (
-                <motion.div 
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  style={{ marginTop: '15px', textAlign: 'center', overflow: 'hidden' }}
-                >
-                  <div style={{ fontWeight: 500, fontSize: '0.95rem' }}>Estimated Cost:</div>
-                  <div style={{ fontSize: '1.6rem', color: 'var(--accent-color)', fontWeight: 700, margin: '5px 0' }}>
-                    ₹{estimatedPrice.toLocaleString('en-IN')}
-                  </div>
-                  <button 
-                    onClick={() => onNavigate('booking', { brand: estimateBrand, service: estimateService })}
-                    className="btn btn-text" 
-                    style={{ fontSize: '0.9rem' }}
-                  >
-                    Proceed to Booking <i className="fas fa-arrow-right"></i>
-                  </button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
         </div>
       </section>
 
@@ -341,16 +250,16 @@ export default function Home({ onNavigate, showToast, theme = 'dark-theme', webs
             <p>Cars Serviced</p>
           </div>
           <div className="stat-item">
-            <h2><Counter target={50} /></h2>
-            <p>Service Centers</p>
+            <h2>Since 2009</h2>
+            <p>Year of Establishment</p>
           </div>
           <div className="stat-item">
-            <h2>4.8/5</h2>
-            <p>Customer Rating</p>
+            <h2>4.1★</h2>
+            <p>82 customer reviews</p>
           </div>
           <div className="stat-item">
-            <h2>24/7</h2>
-            <p>Emergency Support</p>
+            <h2>Everyday</h2>
+            <p>10:00 AM - 6:00 PM</p>
           </div>
         </div>
       </section>
@@ -563,7 +472,7 @@ export default function Home({ onNavigate, showToast, theme = 'dark-theme', webs
             {/* Basic */}
             <motion.div whileHover={{ y: -5 }} className="package-card glass-card">
               <div className="badge badge-primary">Basic Package</div>
-              <div className="package-price">₹{(websiteSettings?.priceBasic || 1999).toLocaleString('en-IN')}<span>/Service</span></div>
+              <div className="package-price" style={{ fontSize: '1.6rem' }}>₹{(websiteSettings?.priceBasic || 1999).toLocaleString('en-IN')}/- <span style={{ fontSize: '0.9rem', fontWeight: 500, color: 'var(--text-muted)' }}>(Starts from)</span></div>
               <ul className="package-features">
                 <li><i className="fas fa-check"></i> Engine Oil Check</li>
                 <li><i className="fas fa-check"></i> Battery Check</li>
@@ -579,7 +488,7 @@ export default function Home({ onNavigate, showToast, theme = 'dark-theme', webs
             {/* Standard */}
             <motion.div whileHover={{ y: -5 }} className="package-card glass-card featured">
               <div className="badge badge-success">Standard Package</div>
-              <div className="package-price">₹{(websiteSettings?.priceStandard || 3999).toLocaleString('en-IN')}<span>/Service</span></div>
+              <div className="package-price" style={{ fontSize: '1.6rem' }}>₹{(websiteSettings?.priceStandard || 3999).toLocaleString('en-IN')}/- <span style={{ fontSize: '0.9rem', fontWeight: 500, color: 'var(--text-muted)' }}>(Starts from)</span></div>
               <ul className="package-features">
                 <li><i className="fas fa-check"></i> Engine Oil Check & Top Up</li>
                 <li><i className="fas fa-check"></i> Battery Check & Diagnostics</li>
@@ -595,7 +504,7 @@ export default function Home({ onNavigate, showToast, theme = 'dark-theme', webs
             {/* Premium */}
             <motion.div whileHover={{ y: -5 }} className="package-card glass-card">
               <div className="badge badge-primary">Premium Package</div>
-              <div className="package-price">₹{(websiteSettings?.pricePremium || 6999).toLocaleString('en-IN')}<span>/Service</span></div>
+              <div className="package-price" style={{ fontSize: '1.6rem' }}>₹{(websiteSettings?.pricePremium || 6999).toLocaleString('en-IN')}/- <span style={{ fontSize: '0.9rem', fontWeight: 500, color: 'var(--text-muted)' }}>(Starts from)</span></div>
               <ul className="package-features">
                 <li><i className="fas fa-check"></i> Complete Engine Oil & Filter Change</li>
                 <li><i className="fas fa-check"></i> Battery Check & Full Diagnosis</li>
@@ -625,9 +534,9 @@ export default function Home({ onNavigate, showToast, theme = 'dark-theme', webs
               <tbody>
                 <tr>
                   <td>Starting Price</td>
-                  <td>₹{(websiteSettings?.priceBasic || 1999).toLocaleString('en-IN')}</td>
-                  <td>₹{(websiteSettings?.priceStandard || 3999).toLocaleString('en-IN')}</td>
-                  <td>₹{(websiteSettings?.pricePremium || 6999).toLocaleString('en-IN')}</td>
+                  <td>₹{(websiteSettings?.priceBasic || 1999).toLocaleString('en-IN')}/- (Starts from)</td>
+                  <td>₹{(websiteSettings?.priceStandard || 3999).toLocaleString('en-IN')}/- (Starts from)</td>
+                  <td>₹{(websiteSettings?.pricePremium || 6999).toLocaleString('en-IN')}/- (Starts from)</td>
                 </tr>
                 <tr>
                   <td>Engine Oil Top-Up</td>

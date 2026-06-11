@@ -1550,67 +1550,143 @@ header {
 }
 
 /* Reviews Page Carousel */
-.reviews-slider-container {
+.reviews-carousel-outer {
   position: relative;
-  max-width: 800px;
+  width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
+  padding: 0 20px;
+}
+
+.reviews-carousel-container {
+  width: 100%;
   overflow: hidden;
-  padding: 40px 60px;
+  padding: 20px 0;
 }
 
-.reviews-wrapper {
+.reviews-carousel-track {
   display: flex;
-  transition: transform 0.5s ease-in-out;
+  box-sizing: border-box;
 }
 
-.review-slide-card {
-  min-width: 100%;
-  box-shadow: none;
-  border: none;
-  background: none;
+.reviews-carousel-slide {
+  flex-shrink: 0;
+  padding: 0 12px;
+  box-sizing: border-box;
+}
+
+.review-card {
+  background: var(--bg-secondary);
+  backdrop-filter: var(--backdrop-blur);
+  -webkit-backdrop-filter: var(--backdrop-blur);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  transition: var(--transition);
+  box-shadow: var(--glass-shadow);
+  min-height: 280px;
+  box-sizing: border-box;
+}
+
+.review-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent-color);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.review-card-header {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  text-align: center;
-}
-
-.review-author-img {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  object-fit: cover;
   margin-bottom: 20px;
-  border: 3px solid var(--accent-color);
 }
 
-.rating-stars {
-  color: #F59E0B;
-  margin-bottom: 15px;
+.review-card-stars {
+  color: var(--warning);
   font-size: 1.1rem;
 }
 
-.review-comment {
-  font-size: 1.15rem;
+.review-google-logo {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+.review-card-content {
+  font-size: 1.05rem;
   font-style: italic;
   line-height: 1.6;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   color: var(--text-main);
+  flex-grow: 1;
+  border: none;
+  padding: 0;
+  background: transparent;
 }
 
-.review-author-name {
+.review-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid var(--border-color);
+  padding-top: 20px;
+  margin-top: auto;
+}
+
+.review-user-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  background: var(--input-bg);
+  border: 2px solid var(--accent-color);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.review-user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.review-user-name {
+  font-size: 1.05rem;
   font-weight: 700;
-  font-family: var(--font-title);
   color: var(--accent-color);
+  font-family: var(--font-title);
+  font-style: normal;
 }
 
-.slider-btn {
+.review-verified-text {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.review-verified-icon {
+  color: var(--success);
+  font-size: 0.75rem;
+}
+
+.carousel-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: var(--input-bg);
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-full);
+  background: var(--bg-secondary);
+  backdrop-filter: var(--backdrop-blur);
+  -webkit-backdrop-filter: var(--backdrop-blur);
   border: 1px solid var(--border-color);
   color: var(--text-main);
   cursor: pointer;
@@ -1619,15 +1695,31 @@ header {
   justify-content: center;
   transition: var(--transition);
   z-index: 10;
+  box-shadow: var(--glass-shadow);
 }
 
-.slider-btn:hover {
+.carousel-btn:hover {
   background: var(--accent-color);
-  color: white;
+  border-color: var(--accent-color);
+  color: #FFFFFF;
 }
 
-.slider-btn-prev { left: 15px; }
-.slider-btn-next { right: 15px; }
+.carousel-btn-prev {
+  left: -23px;
+}
+
+.carousel-btn-next {
+  right: -23px;
+}
+
+@media (max-width: 1280px) {
+  .carousel-btn-prev {
+    left: 5px;
+  }
+  .carousel-btn-next {
+    right: 5px;
+  }
+}
 
 .slider-dots {
   display: flex;
@@ -1785,14 +1877,14 @@ header {
   box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
 }
 
-/* Garage Finder */
-.garage-search-row {
+/* Workshop Finder */
+.workshop-search-row {
   display: flex;
   gap: 15px;
   margin-bottom: 30px;
 }
 
-.garage-search-row input {
+.workshop-search-row input {
   flex: 1;
   padding: 14px 20px;
   border-radius: var(--radius-md);
@@ -1802,25 +1894,25 @@ header {
   outline: none;
 }
 
-.garage-list {
+.workshop-list {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
-.garage-item {
+.workshop-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px 25px;
 }
 
-.garage-title {
+.workshop-title {
   font-size: 1.15rem;
   font-weight: 700;
 }
 
-.garage-meta {
+.workshop-meta {
   font-size: 0.85rem;
   color: var(--text-muted);
 }
@@ -1869,7 +1961,7 @@ footer {
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr 1.5fr;
+  grid-template-columns: 1.5fr 1fr 1fr;
   gap: 40px;
   margin-bottom: 50px;
 }
@@ -2140,12 +2232,12 @@ footer {
   .dashboard-grid {
     grid-template-columns: 1fr;
   }
-  .garage-item {
+  .workshop-item {
     flex-direction: column;
     align-items: flex-start;
     gap: 15px;
   }
-  .garage-item > div:last-child {
+  .workshop-item > div:last-child {
     text-align: left !important;
     align-items: flex-start !important;
   }
@@ -2166,6 +2258,66 @@ footer {
   }
 }
 
+/* WhatsApp Float Widget */
+.whatsapp-toggle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #25D366;
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  cursor: pointer;
+  box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4);
+  transition: var(--transition);
+}
+.whatsapp-toggle:hover {
+  transform: scale(1.1);
+  background: #20BA5A;
+}
+
+/* WhatsApp Integration Modal styling */
+.whatsapp-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+.whatsapp-modal {
+  width: 90%;
+  max-width: 450px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+.whatsapp-modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  line-height: 1;
+}
+.whatsapp-modal-close:hover {
+  color: var(--text-main);
+}
+
 @media (max-width: 480px) {
   .hero-title {
     font-size: 2.2rem;
@@ -2181,7 +2333,7 @@ footer {
   }
 }
 
-/* Interactive Diagnostic Hotspots for 4K Garage Hero */
+/* Interactive Diagnostic Hotspots for 4K Workshop Hero */
 .hero-hotspot {
   position: absolute;
   width: 28px;

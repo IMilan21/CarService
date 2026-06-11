@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function Navbar({ activePage, setActivePage, theme, toggleTheme, currentUser, setCurrentUser, showToast }) {
+export default function Navbar({ activePage, setActivePage, theme, toggleTheme }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
@@ -9,7 +9,6 @@ export default function Navbar({ activePage, setActivePage, theme, toggleTheme, 
     { id: 'services', label: 'Services' },
     { id: 'brands', label: 'Brands' },
     { id: 'booking', label: 'Book Service' },
-    { id: 'tracking', label: 'Dashboard & Track' },
     { id: 'reviews', label: 'Reviews' },
     { id: 'blog', label: 'Blog' },
     { id: 'contact', label: 'Contact Us' }
@@ -44,32 +43,7 @@ export default function Navbar({ activePage, setActivePage, theme, toggleTheme, 
 
         {/* Actions bar */}
         <div className="nav-actions">
-          {currentUser ? (
-            <div className="navbar-user-profile" style={{ display: 'flex', alignItems: 'center', gap: '10px', marginRight: '5px' }}>
-              <span className="navbar-greeting" style={{ fontSize: '0.9rem', color: 'var(--text-muted)', display: 'inline-block' }}>
-                Hi, <strong style={{ color: 'var(--accent-color)' }}>{currentUser.fullname.split(' ')[0]}</strong>
-              </span>
-              <button 
-                className="btn btn-secondary" 
-                onClick={() => {
-                  setCurrentUser(null);
-                  showToast('Logged out successfully.', 'info');
-                  setActivePage('home');
-                }}
-                style={{ padding: '6px 12px', fontSize: '0.8rem', whiteSpace: 'nowrap' }}
-              >
-                <i className="fas fa-sign-out-alt"></i> Logout
-              </button>
-            </div>
-          ) : (
-            <button 
-              className="btn btn-primary navbar-signin-btn" 
-              onClick={() => setActivePage('auth')}
-              style={{ padding: '6px 14px', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '5px', marginRight: '5px', whiteSpace: 'nowrap' }}
-            >
-              <i className="fas fa-sign-in-alt"></i> Sign In
-            </button>
-          )}
+
 
           <motion.button 
             whileHover={{ scale: 1.05 }}
@@ -115,37 +89,7 @@ export default function Navbar({ activePage, setActivePage, theme, toggleTheme, 
               </a>
             ))}
             
-            {/* Mobile Auth actions */}
-            {currentUser ? (
-              <div style={{ width: '100%', padding: '15px 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>
-                  Logged in as: <strong style={{ color: 'var(--accent-color)' }}>{currentUser.fullname}</strong>
-                </span>
-                <button 
-                  className="btn btn-secondary" 
-                  onClick={() => {
-                    setCurrentUser(null);
-                    showToast('Logged out successfully.', 'info');
-                    setActivePage('home');
-                    setMobileMenuOpen(false);
-                  }}
-                  style={{ width: '100%', padding: '10px', fontSize: '0.9rem' }}
-                >
-                  <i className="fas fa-sign-out-alt"></i> Logout
-                </button>
-              </div>
-            ) : (
-              <button 
-                className="btn btn-primary" 
-                onClick={() => {
-                  setActivePage('auth');
-                  setMobileMenuOpen(false);
-                }}
-                style={{ width: '100%', padding: '10px', fontSize: '0.9rem', marginTop: '10px' }}
-              >
-                <i className="fas fa-sign-in-alt"></i> Sign In / Sign Up
-              </button>
-            )}
+
           </motion.div>
         )}
       </AnimatePresence>

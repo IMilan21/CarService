@@ -63,6 +63,7 @@ export default function Admin({
     contactPhone: '',
     contactEmail: '',
     contactAddress: '',
+    yearOfEstablishment: '',
     workingHours: '',
     priceBasic: 1999,
     priceStandard: 3999,
@@ -1000,7 +1001,7 @@ export default function Admin({
                     />
                   </div>
                   <div className="form-group" style={{ gridColumn: 'span 2' }}>
-                    <label>Garage Physical Address</label>
+                    <label>Workshop Physical Address</label>
                     <input 
                       type="text" 
                       value={settingsForm.contactAddress} 
@@ -1013,6 +1014,14 @@ export default function Admin({
                       type="text" 
                       value={settingsForm.workingHours} 
                       onChange={(e) => handleSettingsChange('workingHours', e.target.value)} 
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Year of Establishment</label>
+                    <input 
+                      type="text" 
+                      value={settingsForm.yearOfEstablishment || ''} 
+                      onChange={(e) => handleSettingsChange('yearOfEstablishment', e.target.value)} 
                     />
                   </div>
 

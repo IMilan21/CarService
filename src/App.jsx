@@ -13,11 +13,9 @@ import Home from './pages/Home';
 import Services from './pages/Services';
 import Brands from './pages/Brands';
 import Booking from './pages/Booking';
-import Tracking from './pages/Tracking';
 import Reviews from './pages/Reviews';
 import Blog from './pages/Blog';
 import Admin from './pages/Admin';
-import Auth from './pages/Auth';
 import Contact from './pages/Contact';
 
 export default function App() {
@@ -51,22 +49,32 @@ export default function App() {
     return saved ? JSON.parse(saved) : [];
   });
 
-  // Dynamic Content States
   const [servicesData, setServicesData] = useState(() => {
     const saved = localStorage.getItem('autocare_services');
-    if (saved) return JSON.parse(saved);
-    return [
+    const defaultServices = [
       { id: '1', title: 'Periodic Service', category: 'Maintenance', price: 2499, img: 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80', desc: 'Complete 40-point maintenance inspect, engine oil top-up, spark plugs inspection and filter check.' },
       { id: '2', title: 'Oil Change', category: 'Maintenance', price: 1499, img: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80', desc: 'Premium synthetic oil replace & lubricant check with standard oil filter replacements.' },
       { id: '3', title: 'Brake Repair', category: 'Repairs', price: 1899, img: 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80', desc: 'Inspection of calipers, pads replacement, lines bleeding and diagnostic safety report.' },
       { id: '4', title: 'Wheel Alignment', category: 'Repairs', price: 899, img: 'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=600&q=80', desc: 'Precise 3D wheel alignment, tracking adjustment and dynamic balancing for safety.' },
       { id: '5', title: 'AC Service', category: 'Repairs', price: 1299, img: 'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=600&q=80', desc: 'Cabin filter cleaning, vent sterilization and AC refrigerant gas top-up.' },
-      { id: '6', title: 'Engine Repair', category: 'Repairs', price: 9999, img: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80', desc: 'Advanced engine overhaul, valve tuning, diagnostic error clearance and performance tuning.' },
+      { id: '6', title: 'Engine Overhaul & Diagnostics', category: 'Repairs', price: 9999, img: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80', desc: 'Advanced engine overhaul, valve tuning, diagnostic error clearance and performance tuning.' },
       { id: '7', title: 'Battery Replacement', category: 'Maintenance', price: 3499, img: 'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=600&q=80', desc: 'High capacity battery installation with 36 months warranty and old battery recycling.' },
-      { id: '8', title: 'Dent & Paint', category: 'Cleaning', price: 4999, img: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80', desc: 'Precision scratch extraction, paint match code painting and high-gloss polish overlay.' },
-      { id: '9', title: 'Car Wash', category: 'Cleaning', price: 599, img: 'https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=600&q=80', desc: 'High pressure shampoo wash, underbody clean, dashboard cleaning and vacuum service.' },
-      { id: '10', title: 'Insurance Claim Assistance', category: 'Utility', price: 0, img: 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80', desc: 'End-to-end documentation preparation, garage inspector coordinates and quick claim processing.' }
+      { id: '8', title: 'Denting & Painting', category: 'Cleaning', price: 4999, img: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80', desc: 'Car denting, car painting with precision scratch extraction, paint matched code painting, and high-gloss polish overlay.' },
+      { id: '9', title: 'Shocker & Suspension Repair', category: 'Repairs', price: 1999, img: 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80', desc: 'Complete shocker repair and suspension system tuning for smooth drivability.' },
+      { id: '10', title: 'Transmission Repair', category: 'Repairs', price: 4999, img: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80', desc: 'Gearbox repairs, transmission fluid flush, clutch tuning, and mechanical gearbox replacements.' },
+      { id: '11', title: 'Accident Car Repair & Services', category: 'Utility', price: 7999, img: 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80', desc: 'End-to-end frame repair, structural painting, structural alignment, and claim processing.' },
+      { id: '12', title: 'Car Wash', category: 'Cleaning', price: 599, img: 'https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=600&q=80', desc: 'High pressure shampoo wash, underbody clean, dashboard cleaning and vacuum service.' },
+      { id: '13', title: 'Insurance Claim Assistance', category: 'Utility', price: 0, img: 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80', desc: 'End-to-end documentation preparation, workshop inspector coordinates and quick claim processing.' }
     ];
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (!parsed.some(s => s.title === 'Shocker & Suspension Repair') || parsed.some(s => s.desc.includes('garage'))) {
+        localStorage.setItem('autocare_services', JSON.stringify(defaultServices));
+        return defaultServices;
+      }
+      return parsed;
+    }
+    return defaultServices;
   });
 
   const [blogArticles, setBlogArticles] = useState(() => {
@@ -81,26 +89,50 @@ export default function App() {
 
   const [reviews, setReviews] = useState(() => {
     const saved = localStorage.getItem('autocare_reviews');
-    if (saved) return JSON.parse(saved);
-    return [
-      { id: 1, name: 'Siddharth Sharma', stars: 5, comment: 'Exceptional service! The pickup was right on time and my car felt like brand new after the standard service package.', img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&h=150&q=80' },
-      { id: 2, name: 'Neha Goel', stars: 5, comment: 'Highly recommend the AI recommendation tool. It diagnosed my AC issue correctly and saved me from unnecessary garage repairs.', img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&h=150&q=80' },
-      { id: 3, name: 'Amit Verma', stars: 4, comment: 'The live tracking feature is super convenient. I was able to watch progress updates step-by-step from my desk.', img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&h=150&q=80' }
+    const defaultReviews = [
+      { id: 1, name: 'Dheeraj Chamoli', stars: 5, comment: 'Superb experience. The service was smooth, professional, and completed on time.' },
+      { id: 2, name: 'Saurabh Kansal', stars: 5, comment: 'Had an awesome experience with GS Automobiles. My accidental car was restored like new within just 5 days. Excellent workmanship and timely delivery.' },
+      { id: 3, name: 'Upkar Dobriyal', stars: 5, comment: 'Experienced workers and good staff. The team was helpful and handled everything professionally.' },
+      { id: 4, name: 'Sachin Kashyap', stars: 5, comment: 'My car\'s ABS warning light issue was diagnosed accurately and fixed professionally. The technicians were knowledgeable and the service quality was excellent.' },
+      { id: 5, name: 'Tushar Tyagi', stars: 5, comment: 'Got my car serviced at GS Automobiles. Everything was handled smoothly and the pricing was around 20% lower than the market rate.' },
+      { id: 6, name: 'Shivam Sharma', stars: 5, comment: 'Very good service. Professional staff and a hassle-free experience.' },
+      { id: 7, name: 'Rio Sports', stars: 5, comment: 'Best quality denting service in the neighborhood. Highly recommended for body repair work.' },
+      { id: 8, name: 'Vikas Shakya', stars: 5, comment: 'Wonderful experience at GS Automobiles. The team was honest, customer-focused, and completed the work on time with excellent quality.' }
     ];
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (parsed.length !== 8 || !parsed.some(r => r.name === 'Dheeraj Chamoli')) {
+        localStorage.setItem('autocare_reviews', JSON.stringify(defaultReviews));
+        return defaultReviews;
+      }
+      return parsed;
+    }
+    return defaultReviews;
   });
 
   const [websiteSettings, setWebsiteSettings] = useState(() => {
     const saved = localStorage.getItem('autocare_settings');
-    if (saved) return JSON.parse(saved);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (parsed.contactAddress === '123 Auto Plaza, Sector 62, Noida, UP - 201301' || !parsed.yearOfEstablishment || parsed.workingHours === 'Mon - Sat: 9:00 AM - 7:00 PM' || parsed.contactPhone) {
+        parsed.contactAddress = 'Plot no.677, Sucheta Kriplani Marg, near igl cng pump, Shakti Khand III, Indirapuram, Ghaziabad, Uttar Pradesh 201014';
+        parsed.yearOfEstablishment = '2009';
+        parsed.workingHours = 'Everyday: 10:00 AM - 6:00 PM';
+        parsed.contactPhone = '';
+        localStorage.setItem('autocare_settings', JSON.stringify(parsed));
+      }
+      return parsed;
+    }
     return {
       heroTagline: 'Trusted Car Services for Every Brand',
       heroTitlePrefix: 'Keep Your Car Running at ',
       heroTitleHighlight: 'Peak Performance',
-      heroDescription: 'Experience premium automotive care with upfront transparent pricing, certified mechanics, and live step-by-step service tracking.',
-      contactPhone: '+91 98765 43210',
+      heroDescription: 'Experience premium automotive care with upfront transparent pricing, certified mechanics, and dedicated workshop support.',
+      contactPhone: '',
       contactEmail: 'support@gsautomobiles.com',
-      contactAddress: '123 Auto Plaza, Sector 62, Noida, UP - 201301',
-      workingHours: 'Mon - Sat: 9:00 AM - 7:00 PM',
+      contactAddress: 'Plot no.677, Sucheta Kriplani Marg, near igl cng pump, Shakti Khand III, Indirapuram, Ghaziabad, Uttar Pradesh 201014',
+      yearOfEstablishment: '2009',
+      workingHours: 'Everyday: 10:00 AM - 6:00 PM',
       priceBasic: 1999,
       priceStandard: 3999,
       pricePremium: 6999
@@ -110,31 +142,6 @@ export default function App() {
   const [wishlistOpen, setWishlistOpen] = useState(false);
   const [toasts, setToasts] = useState([]);
   const [showScrollTop, setShowScrollTop] = useState(false);
-
-  // User Authentication States
-  const [currentUser, setCurrentUser] = useState(() => {
-    const saved = localStorage.getItem('autocare_current_user');
-    return saved ? JSON.parse(saved) : null;
-  });
-
-  const [users, setUsers] = useState(() => {
-    const saved = localStorage.getItem('autocare_users');
-    return saved ? JSON.parse(saved) : [];
-  });
-
-  const [authRedirectParams, setAuthRedirectParams] = useState(null);
-
-  useEffect(() => {
-    if (currentUser) {
-      localStorage.setItem('autocare_current_user', JSON.stringify(currentUser));
-    } else {
-      localStorage.removeItem('autocare_current_user');
-    }
-  }, [currentUser]);
-
-  useEffect(() => {
-    localStorage.setItem('autocare_users', JSON.stringify(users));
-  }, [users]);
 
   // Sync state changes to localStorage
   useEffect(() => {
@@ -244,28 +251,9 @@ export default function App() {
 
   // Navigations
   const handleNavigate = (page, params = null) => {
-    if (page === 'booking' && !currentUser) {
-      setAuthRedirectParams(params);
-      setActivePage('auth');
-      showToast('Please Login or Signup to book services.', 'info');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
     setActivePage(page);
     setPageParams(params);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleAuthSuccess = (user) => {
-    setCurrentUser(user);
-    showToast(`Welcome back, ${user.fullname}!`, 'success');
-    if (authRedirectParams) {
-      setActivePage('booking');
-      setPageParams(authRedirectParams);
-      setAuthRedirectParams(null);
-    } else {
-      setActivePage('home');
-    }
   };
 
   // Quick book now from wishlist side-panel
@@ -291,9 +279,6 @@ export default function App() {
           setActivePage={(page) => handleNavigate(page)} 
           theme={theme}
           toggleTheme={toggleTheme}
-          currentUser={currentUser}
-          setCurrentUser={setCurrentUser}
-          showToast={showToast}
         />
       )}
 
@@ -336,17 +321,6 @@ export default function App() {
               addLoyaltyPoints={addLoyaltyPoints}
               servicesData={servicesData}
               websiteSettings={websiteSettings}
-              currentUser={currentUser}
-            />
-          )}
-          {activePage === 'tracking' && (
-            <Tracking 
-              key="tracking" 
-              initialTrackId={pageParams?.trackId} 
-              bookingHistory={bookingHistory}
-              loyaltyPoints={loyaltyPoints}
-              updateBookingStatus={updateBookingStatus}
-              showToast={showToast}
             />
           )}
           {activePage === 'reviews' && (
@@ -363,15 +337,7 @@ export default function App() {
               blogArticles={blogArticles}
             />
           )}
-          {activePage === 'auth' && (
-            <Auth 
-              key="auth" 
-              users={users}
-              setUsers={setUsers}
-              onAuthSuccess={handleAuthSuccess}
-              onNavigate={handleNavigate}
-            />
-          )}
+
           {activePage === 'contact' && (
             <Contact 
               key="contact" 
