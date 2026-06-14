@@ -94,81 +94,60 @@ GS Automobiles`;
 
               {/* Form */}
               <form onSubmit={handleSendWhatsApp} style={{ display: 'flex', flexDirection: 'column', gap: '15px', textAlign: 'left', marginBottom: '15px' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                    <label style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Car Brand *</label>
-                    <input 
-                      type="text" 
-                      placeholder="e.g. Maruti" 
-                      value={carBrand}
-                      onChange={(e) => setCarBrand(e.target.value)}
-                      required
-                      style={{
-                        width: '100%',
-                        padding: '10px 12px',
-                        background: 'var(--input-bg)',
-                        border: '1px solid var(--border-color)',
-                        borderRadius: 'var(--radius-sm)',
-                        color: 'var(--input-text)'
-                      }}
-                    />
+                <div className="form-grid" style={{ gap: '15px' }}>
+                  <div className="premium-input-group">
+                    <label>Car Brand *</label>
+                    <div className="premium-input-wrapper">
+                      <input 
+                        type="text" 
+                        placeholder="e.g. Maruti" 
+                        value={carBrand}
+                        onChange={(e) => setCarBrand(e.target.value)}
+                        required
+                      />
+                      <i className="fas fa-car"></i>
+                    </div>
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                    <label style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Car Model *</label>
-                    <input 
-                      type="text" 
-                      placeholder="e.g. Swift" 
-                      value={carModel}
-                      onChange={(e) => setCarModel(e.target.value)}
-                      required
-                      style={{
-                        width: '100%',
-                        padding: '10px 12px',
-                        background: 'var(--input-bg)',
-                        border: '1px solid var(--border-color)',
-                        borderRadius: 'var(--radius-sm)',
-                        color: 'var(--input-text)'
-                      }}
-                    />
+                  <div className="premium-input-group">
+                    <label>Car Model *</label>
+                    <div className="premium-input-wrapper">
+                      <input 
+                        type="text" 
+                        placeholder="e.g. Swift" 
+                        value={carModel}
+                        onChange={(e) => setCarModel(e.target.value)}
+                        required
+                      />
+                      <i className="fas fa-gauge-high"></i>
+                    </div>
                   </div>
                 </div>
                 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                  <label style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Kilometers Driven (Optional)</label>
-                  <input 
-                    type="text" 
-                    placeholder="e.g. 45,000 km" 
-                    value={kmDriven}
-                    onChange={(e) => setKmDriven(e.target.value)}
-                    style={{
-                      width: '100%',
-                      padding: '10px 12px',
-                      background: 'var(--input-bg)',
-                      border: '1px solid var(--border-color)',
-                      borderRadius: 'var(--radius-sm)',
-                      color: 'var(--input-text)'
-                    }}
-                  />
+                <div className="premium-input-group">
+                  <label>Kilometers Driven (Optional)</label>
+                  <div className="premium-input-wrapper">
+                    <input 
+                      type="text" 
+                      placeholder="e.g. 45,000 km" 
+                      value={kmDriven}
+                      onChange={(e) => setKmDriven(e.target.value)}
+                    />
+                    <i className="fas fa-tachometer-alt"></i>
+                  </div>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                  <label style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Issue / Service Needed *</label>
-                  <textarea 
-                    rows="3"
-                    placeholder="Describe what help you need..." 
-                    value={issueText}
-                    onChange={(e) => setIssueText(e.target.value)}
-                    required
-                    style={{
-                      width: '100%',
-                      padding: '10px 12px',
-                      background: 'var(--input-bg)',
-                      border: '1px solid var(--border-color)',
-                      borderRadius: 'var(--radius-sm)',
-                      color: 'var(--input-text)',
-                      resize: 'none'
-                    }}
-                  />
+                <div className="premium-input-group">
+                  <label>Issue / Service Needed *</label>
+                  <div className="premium-input-wrapper">
+                    <textarea 
+                      rows="3"
+                      placeholder="Describe what help you need..." 
+                      value={issueText}
+                      onChange={(e) => setIssueText(e.target.value)}
+                      required
+                    />
+                    <i className="fas fa-wrench"></i>
+                  </div>
                 </div>
                 <button 
                   type="submit" 

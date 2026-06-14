@@ -142,46 +142,57 @@ GS Automobiles`;
                     
                     <form onSubmit={handleWhatsAppContact} style={{ textAlign: 'left' }}>
                       <div className="form-grid" style={{ gap: '15px', marginBottom: '15px' }}>
-                        <div>
-                          <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>Car Brand *</label>
-                          <input 
-                            type="text" 
-                            placeholder="e.g. Toyota" 
-                            value={carBrand}
-                            onChange={(e) => setCarBrand(e.target.value)}
-                            required
-                          />
+                        <div className="premium-input-group">
+                          <label>Car Brand *</label>
+                          <div className="premium-input-wrapper">
+                            <input 
+                              type="text" 
+                              placeholder="e.g. Toyota" 
+                              value={carBrand}
+                              onChange={(e) => setCarBrand(e.target.value)}
+                              required
+                            />
+                            <i className="fas fa-car"></i>
+                          </div>
                         </div>
-                        <div>
-                          <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>Car Model *</label>
-                          <input 
-                            type="text" 
-                            placeholder="e.g. Fortuner" 
-                            value={carModel}
-                            onChange={(e) => setCarModel(e.target.value)}
-                            required
-                          />
+                        <div className="premium-input-group">
+                          <label>Car Model *</label>
+                          <div className="premium-input-wrapper">
+                            <input 
+                              type="text" 
+                              placeholder="e.g. Fortuner" 
+                              value={carModel}
+                              onChange={(e) => setCarModel(e.target.value)}
+                              required
+                            />
+                            <i className="fas fa-gauge-high"></i>
+                          </div>
                         </div>
                       </div>
-                      <div style={{ marginBottom: '15px' }}>
-                        <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>Kilometers Driven (Optional)</label>
-                        <input 
-                          type="text" 
-                          placeholder="e.g. 45,000 km" 
-                          value={details}
-                          onChange={(e) => setDetails(e.target.value)}
-                        />
+                      <div className="premium-input-group" style={{ marginBottom: '15px' }}>
+                        <label>Kilometers Driven (Optional)</label>
+                        <div className="premium-input-wrapper">
+                          <input 
+                            type="text" 
+                            placeholder="e.g. 45,000 km" 
+                            value={details}
+                            onChange={(e) => setDetails(e.target.value)}
+                          />
+                          <i className="fas fa-tachometer-alt"></i>
+                        </div>
                       </div>
-                      <div style={{ marginBottom: '25px' }}>
-                        <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>My Query / Problem *</label>
-                        <textarea 
-                          rows="3"
-                          placeholder="Describe your issue or questions here..." 
-                          value={query}
-                          onChange={(e) => setQuery(e.target.value)}
-                          required
-                          style={{ resize: 'none' }}
-                        />
+                      <div className="premium-input-group" style={{ marginBottom: '25px' }}>
+                        <label>My Query / Problem *</label>
+                        <div className="premium-input-wrapper">
+                          <textarea 
+                            rows="3"
+                            placeholder="Describe your issue or questions here..." 
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                            required
+                          />
+                          <i className="fas fa-wrench"></i>
+                        </div>
                       </div>
 
                       <div style={{ display: 'flex', gap: '10px' }}>
@@ -209,46 +220,57 @@ GS Automobiles`;
                     
                     <form onSubmit={handleGmailContact} style={{ textAlign: 'left' }}>
                       <div className="form-grid" style={{ gap: '15px', marginBottom: '15px' }}>
-                        <div>
-                          <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>Car Brand *</label>
-                          <input 
-                            type="text" 
-                            placeholder="e.g. Honda" 
-                            value={carBrand}
-                            onChange={(e) => setCarBrand(e.target.value)}
-                            required
-                          />
+                        <div className="premium-input-group">
+                          <label>Car Brand *</label>
+                          <div className="premium-input-wrapper">
+                            <input 
+                              type="text" 
+                              placeholder="e.g. Honda" 
+                              value={carBrand}
+                              onChange={(e) => setCarBrand(e.target.value)}
+                              required
+                            />
+                            <i className="fas fa-car"></i>
+                          </div>
                         </div>
-                        <div>
-                          <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>Car Model *</label>
-                          <input 
-                            type="text" 
-                            placeholder="e.g. Civic" 
-                            value={carModel}
-                            onChange={(e) => setCarModel(e.target.value)}
-                            required
-                          />
+                        <div className="premium-input-group">
+                          <label>Car Model *</label>
+                          <div className="premium-input-wrapper">
+                            <input 
+                              type="text" 
+                              placeholder="e.g. Civic" 
+                              value={carModel}
+                              onChange={(e) => setCarModel(e.target.value)}
+                              required
+                            />
+                            <i className="fas fa-gauge-high"></i>
+                          </div>
                         </div>
                       </div>
-                      <div style={{ marginBottom: '15px' }}>
-                        <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>Kilometers Driven (Optional)</label>
-                        <input 
-                          type="text" 
-                          placeholder="e.g. 45,000 km" 
-                          value={details}
-                          onChange={(e) => setDetails(e.target.value)}
-                        />
+                      <div className="premium-input-group" style={{ marginBottom: '15px' }}>
+                        <label>Kilometers Driven (Optional)</label>
+                        <div className="premium-input-wrapper">
+                          <input 
+                            type="text" 
+                            placeholder="e.g. 45,000 km" 
+                            value={details}
+                            onChange={(e) => setDetails(e.target.value)}
+                          />
+                          <i className="fas fa-tachometer-alt"></i>
+                        </div>
                       </div>
-                      <div style={{ marginBottom: '25px' }}>
-                        <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>My Query / Problem *</label>
-                        <textarea 
-                          rows="3"
-                          placeholder="Describe your issue or questions here..." 
-                          value={query}
-                          onChange={(e) => setQuery(e.target.value)}
-                          required
-                          style={{ resize: 'none' }}
-                        />
+                      <div className="premium-input-group" style={{ marginBottom: '25px' }}>
+                        <label>My Query / Problem *</label>
+                        <div className="premium-input-wrapper">
+                          <textarea 
+                            rows="3"
+                            placeholder="Describe your issue or questions here..." 
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                            required
+                          />
+                          <i className="fas fa-wrench"></i>
+                        </div>
                       </div>
 
                       <div style={{ display: 'flex', gap: '10px' }}>

@@ -84,27 +84,19 @@ GS Automobiles`;
                   </p>
 
                   {/* Option Cards */}
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '25px', marginBottom: '40px' }}>
+                  <div className="booking-options-grid">
                     
                     {/* WhatsApp Option */}
                     <motion.div 
                       whileHover={{ y: -5, borderColor: '#25D366' }}
                       onClick={() => setActiveIntegration('whatsapp')}
-                      style={{
-                        background: 'rgba(255, 255, 255, 0.02)',
-                        border: '1px solid var(--border-color)',
-                        borderRadius: 'var(--radius-md)',
-                        padding: '35px 25px',
-                        cursor: 'pointer',
-                        textAlign: 'center',
-                        transition: 'border-color 0.3s ease'
-                      }}
+                      className="booking-option-card"
                     >
-                      <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'rgba(37, 211, 102, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', border: '1px solid #25D366' }}>
-                        <i className="fab fa-whatsapp" style={{ fontSize: '1.8rem', color: '#25D366' }}></i>
+                      <div className="booking-option-icon-wrapper whatsapp-icon">
+                        <i className="fab fa-whatsapp"></i>
                       </div>
-                      <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '10px' }}>Book via WhatsApp</h3>
-                      <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: '1.5' }}>
+                      <h3>Book via WhatsApp</h3>
+                      <p>
                         Send your car details and issue description directly to our workshop managers on WhatsApp.
                       </p>
                     </motion.div>
@@ -113,21 +105,13 @@ GS Automobiles`;
                     <motion.div 
                       whileHover={{ y: -5, borderColor: '#EA4335' }}
                       onClick={() => setShowGmailModal(true)}
-                      style={{
-                        background: 'rgba(255, 255, 255, 0.02)',
-                        border: '1px solid var(--border-color)',
-                        borderRadius: 'var(--radius-md)',
-                        padding: '35px 25px',
-                        cursor: 'pointer',
-                        textAlign: 'center',
-                        transition: 'border-color 0.3s ease'
-                      }}
+                      className="booking-option-card"
                     >
-                      <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'rgba(234, 67, 53, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', border: '1px solid #EA4335' }}>
-                        <i className="fas fa-envelope" style={{ fontSize: '1.7rem', color: '#EA4335' }}></i>
+                      <div className="booking-option-icon-wrapper gmail-icon">
+                        <i className="fas fa-envelope"></i>
                       </div>
-                      <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '10px' }}>Book via Gmail</h3>
-                      <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: '1.5' }}>
+                      <h3>Book via Gmail</h3>
+                      <p>
                         Send an automated email inquiry and receive direct scheduling confirmations in your inbox.
                       </p>
                     </motion.div>
@@ -165,46 +149,57 @@ GS Automobiles`;
                   {/* Form */}
                   <form onSubmit={handleWhatsAppBooking} style={{ textAlign: 'left', maxWidth: '500px', margin: '0 auto' }}>
                     <div className="form-grid" style={{ gap: '15px', marginBottom: '15px' }}>
-                      <div>
-                        <label style={{ fontSize: '0.85rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>Car Brand *</label>
-                        <input 
-                          type="text" 
-                          placeholder="e.g. Maruti Suzuki" 
-                          value={carBrand}
-                          onChange={(e) => setCarBrand(e.target.value)}
-                          required
-                        />
+                      <div className="premium-input-group">
+                        <label>Car Brand *</label>
+                        <div className="premium-input-wrapper">
+                          <input 
+                            type="text" 
+                            placeholder="e.g. Maruti Suzuki" 
+                            value={carBrand}
+                            onChange={(e) => setCarBrand(e.target.value)}
+                            required
+                          />
+                          <i className="fas fa-car"></i>
+                        </div>
                       </div>
-                      <div>
-                        <label style={{ fontSize: '0.85rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>Car Model *</label>
-                        <input 
-                          type="text" 
-                          placeholder="e.g. Swift" 
-                          value={carModel}
-                          onChange={(e) => setCarModel(e.target.value)}
-                          required
-                        />
+                      <div className="premium-input-group">
+                        <label>Car Model *</label>
+                        <div className="premium-input-wrapper">
+                          <input 
+                            type="text" 
+                            placeholder="e.g. Swift" 
+                            value={carModel}
+                            onChange={(e) => setCarModel(e.target.value)}
+                            required
+                          />
+                          <i className="fas fa-gauge-high"></i>
+                        </div>
                       </div>
                     </div>
-                    <div style={{ marginBottom: '15px' }}>
-                      <label style={{ fontSize: '0.85rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>Kilometers Driven (Optional)</label>
-                      <input 
-                        type="text" 
-                        placeholder="e.g. 45,000 km" 
-                        value={kmDriven}
-                        onChange={(e) => setKmDriven(e.target.value)}
-                      />
+                    <div className="premium-input-group" style={{ marginBottom: '15px' }}>
+                      <label>Kilometers Driven (Optional)</label>
+                      <div className="premium-input-wrapper">
+                        <input 
+                          type="text" 
+                          placeholder="e.g. 45,000 km" 
+                          value={kmDriven}
+                          onChange={(e) => setKmDriven(e.target.value)}
+                        />
+                        <i className="fas fa-tachometer-alt"></i>
+                      </div>
                     </div>
-                    <div style={{ marginBottom: '25px' }}>
-                      <label style={{ fontSize: '0.85rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>Issue / Service Required *</label>
-                      <textarea 
-                        rows="3"
-                        placeholder="e.g. Periodic maintenance service and suspension check" 
-                        value={serviceNeeded}
-                        onChange={(e) => setServiceNeeded(e.target.value)}
-                        required
-                        style={{ resize: 'none' }}
-                      />
+                    <div className="premium-input-group" style={{ marginBottom: '25px' }}>
+                      <label>Issue / Service Required *</label>
+                      <div className="premium-input-wrapper">
+                        <textarea 
+                          rows="3"
+                          placeholder="e.g. Periodic maintenance service and suspension check" 
+                          value={serviceNeeded}
+                          onChange={(e) => setServiceNeeded(e.target.value)}
+                          required
+                        />
+                        <i className="fas fa-wrench"></i>
+                      </div>
                     </div>
 
                     <div style={{ display: 'flex', gap: '15px', justifyContent: 'center' }}>
@@ -247,46 +242,57 @@ GS Automobiles`;
                   {/* Form */}
                   <form onSubmit={handleGmailBooking} style={{ textAlign: 'left', maxWidth: '500px', margin: '0 auto' }}>
                     <div className="form-grid" style={{ gap: '15px', marginBottom: '15px' }}>
-                      <div>
-                        <label style={{ fontSize: '0.85rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>Car Brand *</label>
-                        <input 
-                          type="text" 
-                          placeholder="e.g. Maruti Suzuki" 
-                          value={carBrand}
-                          onChange={(e) => setCarBrand(e.target.value)}
-                          required
-                        />
+                      <div className="premium-input-group">
+                        <label>Car Brand *</label>
+                        <div className="premium-input-wrapper">
+                          <input 
+                            type="text" 
+                            placeholder="e.g. Maruti Suzuki" 
+                            value={carBrand}
+                            onChange={(e) => setCarBrand(e.target.value)}
+                            required
+                          />
+                          <i className="fas fa-car"></i>
+                        </div>
                       </div>
-                      <div>
-                        <label style={{ fontSize: '0.85rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>Car Model *</label>
-                        <input 
-                          type="text" 
-                          placeholder="e.g. Swift" 
-                          value={carModel}
-                          onChange={(e) => setCarModel(e.target.value)}
-                          required
-                        />
+                      <div className="premium-input-group">
+                        <label>Car Model *</label>
+                        <div className="premium-input-wrapper">
+                          <input 
+                            type="text" 
+                            placeholder="e.g. Swift" 
+                            value={carModel}
+                            onChange={(e) => setCarModel(e.target.value)}
+                            required
+                          />
+                          <i className="fas fa-gauge-high"></i>
+                        </div>
                       </div>
                     </div>
-                    <div style={{ marginBottom: '15px' }}>
-                      <label style={{ fontSize: '0.85rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>Kilometers Driven (Optional)</label>
-                      <input 
-                        type="text" 
-                        placeholder="e.g. 45,000 km" 
-                        value={kmDriven}
-                        onChange={(e) => setKmDriven(e.target.value)}
-                      />
+                    <div className="premium-input-group" style={{ marginBottom: '15px' }}>
+                      <label>Kilometers Driven (Optional)</label>
+                      <div className="premium-input-wrapper">
+                        <input 
+                          type="text" 
+                          placeholder="e.g. 45,000 km" 
+                          value={kmDriven}
+                          onChange={(e) => setKmDriven(e.target.value)}
+                        />
+                        <i className="fas fa-tachometer-alt"></i>
+                      </div>
                     </div>
-                    <div style={{ marginBottom: '25px' }}>
-                      <label style={{ fontSize: '0.85rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>Issue / Service Required *</label>
-                      <textarea 
-                        rows="3"
-                        placeholder="e.g. Periodic maintenance service and suspension check" 
-                        value={serviceNeeded}
-                        onChange={(e) => setServiceNeeded(e.target.value)}
-                        required
-                        style={{ resize: 'none' }}
-                      />
+                    <div className="premium-input-group" style={{ marginBottom: '25px' }}>
+                      <label>Issue / Service Required *</label>
+                      <div className="premium-input-wrapper">
+                        <textarea 
+                          rows="3"
+                          placeholder="e.g. Periodic maintenance service and suspension check" 
+                          value={serviceNeeded}
+                          onChange={(e) => setServiceNeeded(e.target.value)}
+                          required
+                        />
+                        <i className="fas fa-wrench"></i>
+                      </div>
                     </div>
 
                     <div style={{ display: 'flex', gap: '15px', justifyContent: 'center' }}>

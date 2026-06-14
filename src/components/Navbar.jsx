@@ -83,7 +83,7 @@ export default function Navbar({ activePage, setActivePage, theme, toggleTheme }
                 href={`#${item.id}`}
                 className={activePage === item.id ? 'active' : ''}
                 onClick={(e) => { e.preventDefault(); handleNavClick(item.id); }}
-                style={{ width: '100%', padding: '10px 0', borderBottom: '1px solid var(--border-color)' }}
+                style={{ display: 'block', width: '100%', padding: '12px 16px', borderBottom: '1px solid var(--border-color)', boxSizing: 'border-box' }}
               >
                 {item.label}
               </a>

@@ -941,9 +941,9 @@ export default function Admin({
                   Modifying these values updates the homepage headers, contact panels, and package estimators dynamically in real time.
                 </p>
 
-                <form onSubmit={handleSaveSettings} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                <form onSubmit={handleSaveSettings} className="form-grid" style={{ gap: '20px' }}>
                   
-                  <div className="form-groupform-group-full" style={{ gridColumn: 'span 2' }}>
+                  <div className="form-group form-group-full">
                     <h4 className="settings-section-header">Hero Header Branding</h4>
                   </div>
                   
@@ -971,7 +971,7 @@ export default function Admin({
                       onChange={(e) => handleSettingsChange('heroTitleHighlight', e.target.value)} 
                     />
                   </div>
-                  <div className="form-group" style={{ gridColumn: 'span 2' }}>
+                  <div className="form-group form-group-full">
                     <label>Hero Description</label>
                     <textarea 
                       rows="3" 
@@ -980,14 +980,14 @@ export default function Admin({
                     />
                   </div>
 
-                  <div className="form-groupform-group-full" style={{ gridColumn: 'span 2' }}>
+                  <div className="form-group form-group-full">
                     <h4 className="settings-section-header">Company Contact Details</h4>
                   </div>
 
                   <div className="form-group">
                     <label>Support Hotline Phone</label>
                     <input 
-                      type="text" 
+                      type="tel" 
                       value={settingsForm.contactPhone} 
                       onChange={(e) => handleSettingsChange('contactPhone', e.target.value)} 
                     />
@@ -1000,7 +1000,7 @@ export default function Admin({
                       onChange={(e) => handleSettingsChange('contactEmail', e.target.value)} 
                     />
                   </div>
-                  <div className="form-group" style={{ gridColumn: 'span 2' }}>
+                  <div className="form-group form-group-full">
                     <label>Workshop Physical Address</label>
                     <input 
                       type="text" 
@@ -1025,7 +1025,7 @@ export default function Admin({
                     />
                   </div>
 
-                  <div className="form-groupform-group-full" style={{ gridColumn: 'span 2' }}>
+                  <div className="form-group form-group-full">
                     <h4 className="settings-section-header">Service Packages Starting Price List</h4>
                   </div>
 

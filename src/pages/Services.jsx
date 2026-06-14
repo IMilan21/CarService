@@ -10,7 +10,6 @@ export default function Services({ onNavigate, wishlist, toggleWishlist, recentl
     Cleaning: true,
     Utility: true
   });
-  const [maxPrice, setMaxPrice] = useState(10000);
   const [searchQuery, setSearchQuery] = useState('');
 
   // Toggle Category
@@ -26,7 +25,6 @@ export default function Services({ onNavigate, wishlist, toggleWishlist, recentl
       Cleaning: true,
       Utility: true
     });
-    setMaxPrice(10000);
     setSearchQuery('');
   };
 
@@ -44,9 +42,8 @@ export default function Services({ onNavigate, wishlist, toggleWishlist, recentl
   const filteredServices = servicesData.filter(item => {
     const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           item.desc.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesPrice = item.price <= maxPrice;
     const matchesCategory = categories[item.category];
-    return matchesSearch && matchesPrice && matchesCategory;
+    return matchesSearch && matchesCategory;
   });
 
   return (
@@ -98,23 +95,6 @@ export default function Services({ onNavigate, wishlist, toggleWishlist, recentl
                   /> Utilities & Claims
                 </label>
               </div>
-            </div>
-
-            <div className="filter-group">
-              <h4>Max Budget</h4>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
-                <span>₹500</span>
-                <span>₹{maxPrice.toLocaleString('en-IN')}</span>
-              </div>
-              <input 
-                type="range" 
-                className="price-range-slider" 
-                min="500" 
-                max="10000" 
-                step="500" 
-                value={maxPrice} 
-                onChange={(e) => setMaxPrice(+e.target.value)}
-              />
             </div>
 
             <button className="btn btn-secondary" style={{ width: '100%' }} onClick={handleResetFilters}>

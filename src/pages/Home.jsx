@@ -168,8 +168,8 @@ export default function Home({ onNavigate, showToast, theme = 'dark-theme', webs
           className="hero-car-bg-container"
         >
           <img 
-            src="/garage_hero.png" 
-            alt="Futuristic Car Service Bay" 
+            src="/garage_hero_premium.png" 
+            alt="GS Automobiles Premium Service Bay" 
             className="hero-image-bg"
           />
           <div className="hero-vignette" />

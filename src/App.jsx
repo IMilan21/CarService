@@ -17,11 +17,37 @@ import Reviews from './pages/Reviews';
 import Blog from './pages/Blog';
 import Admin from './pages/Admin';
 import Contact from './pages/Contact';
+import LocationLanding from './pages/LocationLanding';
+import ServiceLanding from './pages/ServiceLanding';
 
 export default function App() {
   // Navigation & Routing State
-  const [activePage, setActivePage] = useState('home');
-  const [pageParams, setPageParams] = useState(null); // params to pre-fill pages (e.g. Booking)
+  const [activePage, setActivePage] = useState(() => {
+    const path = typeof window !== 'undefined' ? window.location.pathname : '/';
+    if (path.startsWith('/locations/')) return 'location-landing';
+    if (path.startsWith('/services/')) {
+      const service = path.split('/services/')[1];
+      const seoSlugs = ['car-service', 'car-ac-repair', 'brake-repair', 'battery-replacement', 'engine-repair', 'denting-painting', 'car-detailing'];
+      if (seoSlugs.includes(service)) return 'service-landing';
+    }
+    if (path !== '/') {
+      const page = path.substring(1);
+      const validPages = ['home', 'services', 'brands', 'booking', 'reviews', 'blog', 'contact', 'admin'];
+      if (validPages.includes(page)) return page;
+    }
+    return 'home';
+  });
+
+  const [pageParams, setPageParams] = useState(() => {
+    const path = typeof window !== 'undefined' ? window.location.pathname : '/';
+    if (path.startsWith('/locations/')) {
+      return { location: path.split('/locations/')[1] };
+    }
+    if (path.startsWith('/services/')) {
+      return { service: path.split('/services/')[1] };
+    }
+    return null;
+  });
 
   // Theme State
   const [theme, setTheme] = useState(() => {
@@ -51,29 +77,33 @@ export default function App() {
 
   const [servicesData, setServicesData] = useState(() => {
     const saved = localStorage.getItem('autocare_services');
+    const savedVersion = localStorage.getItem('autocare_services_version');
+    const CURRENT_VERSION = '20260614_v2';
+
     const defaultServices = [
-      { id: '1', title: 'Periodic Service', category: 'Maintenance', price: 2499, img: 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80', desc: 'Complete 40-point maintenance inspect, engine oil top-up, spark plugs inspection and filter check.' },
-      { id: '2', title: 'Oil Change', category: 'Maintenance', price: 1499, img: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80', desc: 'Premium synthetic oil replace & lubricant check with standard oil filter replacements.' },
-      { id: '3', title: 'Brake Repair', category: 'Repairs', price: 1899, img: 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80', desc: 'Inspection of calipers, pads replacement, lines bleeding and diagnostic safety report.' },
-      { id: '4', title: 'Wheel Alignment', category: 'Repairs', price: 899, img: 'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=600&q=80', desc: 'Precise 3D wheel alignment, tracking adjustment and dynamic balancing for safety.' },
-      { id: '5', title: 'AC Service', category: 'Repairs', price: 1299, img: 'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=600&q=80', desc: 'Cabin filter cleaning, vent sterilization and AC refrigerant gas top-up.' },
-      { id: '6', title: 'Engine Overhaul & Diagnostics', category: 'Repairs', price: 9999, img: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80', desc: 'Advanced engine overhaul, valve tuning, diagnostic error clearance and performance tuning.' },
-      { id: '7', title: 'Battery Replacement', category: 'Maintenance', price: 3499, img: 'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=600&q=80', desc: 'High capacity battery installation with 36 months warranty and old battery recycling.' },
-      { id: '8', title: 'Denting & Painting', category: 'Cleaning', price: 4999, img: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80', desc: 'Car denting, car painting with precision scratch extraction, paint matched code painting, and high-gloss polish overlay.' },
-      { id: '9', title: 'Shocker & Suspension Repair', category: 'Repairs', price: 1999, img: 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80', desc: 'Complete shocker repair and suspension system tuning for smooth drivability.' },
-      { id: '10', title: 'Transmission Repair', category: 'Repairs', price: 4999, img: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80', desc: 'Gearbox repairs, transmission fluid flush, clutch tuning, and mechanical gearbox replacements.' },
-      { id: '11', title: 'Accident Car Repair & Services', category: 'Utility', price: 7999, img: 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80', desc: 'End-to-end frame repair, structural painting, structural alignment, and claim processing.' },
-      { id: '12', title: 'Car Wash', category: 'Cleaning', price: 599, img: 'https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=600&q=80', desc: 'High pressure shampoo wash, underbody clean, dashboard cleaning and vacuum service.' },
-      { id: '13', title: 'Insurance Claim Assistance', category: 'Utility', price: 0, img: 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80', desc: 'End-to-end documentation preparation, workshop inspector coordinates and quick claim processing.' }
+      { id: '1', title: 'Periodic Service', category: 'Maintenance', price: 2499, img: 'https://images.unsplash.com/photo-1517524206127-48bbd363f3d7?auto=format&fit=crop&w=600&q=80', desc: 'Complete 40-point maintenance inspect, engine oil top-up, spark plugs inspection and filter check.' },
+      { id: '2', title: 'Oil Change', category: 'Maintenance', price: 1499, img: 'https://images.unsplash.com/photo-1552656967-7a0991a13906?auto=format&fit=crop&w=600&q=80', desc: 'Premium synthetic oil replace & lubricant check with standard oil filter replacements.' },
+      { id: '3', title: 'Brake Repair', category: 'Repairs', price: 1899, img: 'https://images.unsplash.com/photo-1760317890322-364a810cd4da?auto=format&fit=crop&w=600&q=80', desc: 'Inspection of calipers, pads replacement, lines bleeding and diagnostic safety report.' },
+      { id: '4', title: 'Wheel Alignment', category: 'Repairs', price: 899, img: 'https://images.unsplash.com/photo-1645445522156-9ac06bc7a767?auto=format&fit=crop&w=600&q=80', desc: 'Precise 3D wheel alignment, tracking adjustment and dynamic balancing for safety.' },
+      { id: '5', title: 'AC Service', category: 'Repairs', price: 1299, img: 'https://images.unsplash.com/photo-1615192559550-100bd8c17b5f?auto=format&fit=crop&w=600&q=80', desc: 'Cabin filter cleaning, vent sterilization and AC refrigerant gas top-up.' },
+      { id: '6', title: 'Engine Overhaul & Diagnostics', category: 'Repairs', price: 9999, img: 'https://plus.unsplash.com/premium_photo-1682141708282-3a4f7023e1bb?auto=format&fit=crop&w=600&q=80', desc: 'Advanced engine overhaul, valve tuning, diagnostic error clearance and performance tuning.' },
+      { id: '7', title: 'Battery Replacement', category: 'Maintenance', price: 3499, img: 'https://plus.unsplash.com/premium_photo-1661770030805-0abb8fd880f1?auto=format&fit=crop&w=600&q=80', desc: 'High capacity battery installation with 36 months warranty and old battery recycling.' },
+      { id: '8', title: 'Denting & Painting', category: 'Cleaning', price: 4999, img: 'https://plus.unsplash.com/premium_photo-1661750334379-2f2b4b1f6ef4?auto=format&fit=crop&w=600&q=80', desc: 'Car denting, car painting with precision scratch extraction, paint matched code painting, and high-gloss polish overlay.' },
+      { id: '9', title: 'Shocker & Suspension Repair', category: 'Repairs', price: 1999, img: 'https://plus.unsplash.com/premium_photo-1674375348374-aad3d999634d?auto=format&fit=crop&w=600&q=80', desc: 'Complete shocker repair and suspension system tuning for smooth drivability.' },
+      { id: '10', title: 'Transmission Repair', category: 'Repairs', price: 4999, img: 'https://plus.unsplash.com/premium_photo-1694016219825-62a6a5697027?auto=format&fit=crop&w=600&q=80', desc: 'Gearbox repairs, transmission fluid flush, clutch tuning, and mechanical gearbox replacements.' },
+      { id: '11', title: 'Accident Car Repair & Services', category: 'Utility', price: 7999, img: 'https://plus.unsplash.com/premium_photo-1661964211810-f078c3f9e111?auto=format&fit=crop&w=600&q=80', desc: 'End-to-end frame repair, structural painting, structural alignment, and claim processing.' },
+      { id: '12', title: 'Car Wash', category: 'Cleaning', price: 599, img: 'https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=600&q=80', desc: 'High pressure shampoo wash, underbody clean, dashboard cleaning and vacuum service.' }
     ];
-    if (saved) {
+
+    if (saved && savedVersion === CURRENT_VERSION) {
       const parsed = JSON.parse(saved);
-      if (!parsed.some(s => s.title === 'Shocker & Suspension Repair') || parsed.some(s => s.desc.includes('garage'))) {
-        localStorage.setItem('autocare_services', JSON.stringify(defaultServices));
-        return defaultServices;
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
       }
-      return parsed;
     }
+
+    localStorage.setItem('autocare_services', JSON.stringify(defaultServices));
+    localStorage.setItem('autocare_services_version', CURRENT_VERSION);
     return defaultServices;
   });
 
@@ -167,6 +197,7 @@ export default function App() {
 
   useEffect(() => {
     localStorage.setItem('autocare_services', JSON.stringify(servicesData));
+    localStorage.setItem('autocare_services_version', '20260614_v2');
   }, [servicesData]);
 
   useEffect(() => {
@@ -249,12 +280,122 @@ export default function App() {
     setLoyaltyPoints(prev => prev + points);
   };
 
-  // Navigations
-  const handleNavigate = (page, params = null) => {
+  // Navigations with window.history support for local SEO URLs
+  const handleNavigate = (page, params = null, pushState = true) => {
     setActivePage(page);
     setPageParams(params);
+    
+    if (pushState) {
+      let path = '/';
+      if (page === 'location-landing' && params?.location) {
+        path = `/locations/${params.location}`;
+      } else if (page === 'service-landing' && params?.service) {
+        path = `/services/${params.service}`;
+      } else if (page !== 'home') {
+        path = `/${page}`;
+      }
+      
+      if (window.location.pathname !== path) {
+        window.history.pushState({ page, params }, '', path);
+      }
+    }
+    
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  // Parse pathnames and set up event listeners for forward/back navigation
+  useEffect(() => {
+    const parseUrlRoute = () => {
+      const path = window.location.pathname;
+      if (path.startsWith('/locations/')) {
+        const location = path.split('/locations/')[1];
+        handleNavigate('location-landing', { location }, false);
+      } else if (path.startsWith('/services/')) {
+        const service = path.split('/services/')[1];
+        const seoSlugs = ['car-service', 'car-ac-repair', 'brake-repair', 'battery-replacement', 'engine-repair', 'denting-painting', 'car-detailing'];
+        if (seoSlugs.includes(service)) {
+          handleNavigate('service-landing', { service }, false);
+        } else {
+          handleNavigate('services', null, false);
+        }
+      } else if (path !== '/') {
+        const page = path.substring(1);
+        const validPages = ['home', 'services', 'brands', 'booking', 'reviews', 'blog', 'contact', 'admin'];
+        if (validPages.includes(page)) {
+          handleNavigate(page, null, false);
+        } else {
+          handleNavigate('home', null, false);
+        }
+      } else {
+        handleNavigate('home', null, false);
+      }
+    };
+
+    const handlePopState = (e) => {
+      if (e.state && e.state.page) {
+        handleNavigate(e.state.page, e.state.params, false);
+      } else {
+        parseUrlRoute();
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  // Dynamic homepage AutoRepair LocalBusiness schema injection
+  useEffect(() => {
+    if (activePage === 'home') {
+      const homeSchema = {
+        "@context": "https://schema.org",
+        "@type": "AutoRepair",
+        "name": "GS Automobiles",
+        "image": "https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80",
+        "@id": "https://gsautomobiles.com",
+        "url": "https://gsautomobiles.com",
+        "telephone": "+919999938499",
+        "priceRange": "$$",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Plot no.677, Sucheta Kriplani Marg, near igl cng pump, Shakti Khand III, Indirapuram",
+          "addressLocality": "Ghaziabad",
+          "addressRegion": "UP",
+          "postalCode": "201014",
+          "addressCountry": "IN"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 28.6366,
+          "longitude": 77.3732
+        },
+        "openingHoursSpecification": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+          ],
+          "opens": "10:00",
+          "closes": "18:00"
+        }
+      };
+
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.id = 'seo-home-schema';
+      script.innerHTML = JSON.stringify(homeSchema);
+      document.head.appendChild(script);
+
+      return () => {
+        const existing = document.getElementById('seo-home-schema');
+        if (existing) existing.remove();
+      };
+    }
+  }, [activePage]);
 
   // Quick book now from wishlist side-panel
   const handleBookFromWishlist = (serviceName) => {
@@ -337,12 +478,27 @@ export default function App() {
               blogArticles={blogArticles}
             />
           )}
-
           {activePage === 'contact' && (
             <Contact 
               key="contact" 
               onNavigate={handleNavigate} 
               showToast={showToast} 
+            />
+          )}
+          {activePage === 'location-landing' && (
+            <LocationLanding
+              key="location-landing"
+              locationSlug={pageParams?.location}
+              onNavigate={handleNavigate}
+              showToast={showToast}
+            />
+          )}
+          {activePage === 'service-landing' && (
+            <ServiceLanding
+              key="service-landing"
+              serviceSlug={pageParams?.service}
+              onNavigate={handleNavigate}
+              showToast={showToast}
             />
           )}
           {activePage === 'admin' && (

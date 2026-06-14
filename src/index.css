@@ -76,7 +76,18 @@ a {
 
 button, input, select, textarea {
   font-family: inherit;
+  box-sizing: border-box;
 }
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+select,
+textarea {
+  width: 100%;
+}
+
 
 select option,
 select optgroup {
@@ -101,7 +112,7 @@ select optgroup {
 }
 
 .section-title {
-  font-size: 2.2rem;
+  font-size: clamp(1.6rem, 5vw, 2.2rem);
   margin-bottom: 12px;
 }
 
@@ -425,7 +436,7 @@ header {
 }
 
 .hero-title {
-  font-size: 3.5rem;
+  font-size: clamp(2rem, 8vw, 3.5rem);
   line-height: 1.2;
   margin-bottom: 20px;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -2453,6 +2464,7 @@ footer {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 28%;
   opacity: 0.8;
   filter: brightness(0.68) contrast(1.1);
   transition: filter 0.4s ease, opacity 0.4s ease;
@@ -2995,5 +3007,247 @@ footer {
   box-shadow: 0 4px 10px rgba(255, 107, 0, 0.2);
 }
 
+/* Additional Mobile Responsiveness Overrides */
+@media (max-width: 768px) {
+  /* Prevent automatic zoom when users tap on input fields, textareas, dropdowns, and form elements */
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="password"],
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+  
+  /* Prevent browser zoom behavior during form interaction */
+  button, input, select, textarea {
+    touch-action: manipulation;
+  }
 
+  /* Stack brand details header on mobile to prevent clipping */
+  .brand-details-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+  .brand-details-header .brand-card-logo {
+    margin: 0 auto !important;
+  }
+}
+
+/* Optimize touch targets for tiny interactive elements */
+.slider-dot {
+  position: relative;
+}
+.slider-dot::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+}
+
+
+.whatsapp-modal-close {
+  position: absolute;
+}
+.whatsapp-modal-close::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+}
+
+/* Premium Form Controls */
+.premium-input-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.premium-input-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: var(--transition);
+}
+
+.premium-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.premium-input-wrapper i {
+  position: absolute;
+  left: 16px;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  transition: var(--transition);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.premium-input-wrapper input,
+.premium-input-wrapper textarea {
+  width: 100%;
+  padding: 14px 16px 14px 44px; /* Left padding extra for the icon */
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background: var(--input-bg);
+  color: var(--text-main);
+  font-size: 0.95rem;
+  font-family: var(--font-body);
+  outline: none;
+  transition: var(--transition);
+}
+
+.premium-input-wrapper textarea {
+  padding-top: 14px;
+  resize: none;
+}
+
+/* Hover and Focus States */
+.premium-input-wrapper:hover input,
+.premium-input-wrapper:hover textarea {
+  border-color: rgba(255, 107, 0, 0.4);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.light-theme .premium-input-wrapper:hover input,
+.light-theme .premium-input-wrapper:hover textarea {
+  border-color: rgba(255, 107, 0, 0.4);
+  background: #FFFFFF;
+}
+
+.premium-input-wrapper input:focus,
+.premium-input-wrapper textarea:focus {
+  border-color: var(--accent-color);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.15);
+}
+
+.light-theme .premium-input-wrapper input:focus,
+.light-theme .premium-input-wrapper textarea:focus {
+  background: #FFFFFF;
+  box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.1);
+}
+
+.premium-input-wrapper input:focus ~ i,
+.premium-input-wrapper textarea:focus ~ i {
+  color: var(--accent-color);
+  transform: scale(1.1);
+}
+
+.premium-input-group:focus-within label {
+  color: var(--accent-color);
+}
+
+/* Booking Options Grid */
+.booking-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Force side-by-side columns on ALL screen sizes */
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.booking-option-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 35px 25px;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.3s ease;
+}
+
+.booking-option-icon-wrapper {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  transition: var(--transition);
+}
+
+.booking-option-icon-wrapper.whatsapp-icon {
+  background: rgba(37, 211, 102, 0.1);
+  border: 1px solid #25D366;
+  color: #25D366;
+}
+
+.booking-option-icon-wrapper.whatsapp-icon i {
+  font-size: 1.8rem;
+}
+
+.booking-option-icon-wrapper.gmail-icon {
+  background: rgba(234, 67, 53, 0.1);
+  border: 1px solid #EA4335;
+  color: #EA4335;
+}
+
+.booking-option-icon-wrapper.gmail-icon i {
+  font-size: 1.7rem;
+}
+
+.booking-option-card h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--text-main);
+}
+
+.booking-option-card p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Mobile responsive styles for side-by-side booking cards */
+@media (max-width: 600px) {
+  .booking-options-grid {
+    gap: 12px;
+  }
+  
+  .booking-option-card {
+    padding: 20px 10px;
+    border-radius: var(--radius-sm);
+  }
+  
+  .booking-option-icon-wrapper {
+    width: 45px;
+    height: 45px;
+    margin-bottom: 12px;
+  }
+  
+  .booking-option-icon-wrapper.whatsapp-icon i {
+    font-size: 1.3rem;
+  }
+  
+  .booking-option-icon-wrapper.gmail-icon i {
+    font-size: 1.25rem;
+  }
+  
+  .booking-option-card h3 {
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+  }
+  
+  .booking-option-card p {
+    font-size: 0.78rem;
+    line-height: 1.4;
+  }
+}
 
